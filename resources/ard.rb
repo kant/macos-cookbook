@@ -1,7 +1,5 @@
 resource_name :ard
 
-BASE_COMMAND = '/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart'.freeze
-
 property :install_package, String
 property :uninstall_options, Array, default: ['-files', '-settings', '-prefs']
 property :restart_options, Array, default: ['-agent', '-console', '-menu']
@@ -13,52 +11,34 @@ property :allow_access_for, String, default: '-allUsers'
 property :computerinfo, Array
 property :clientopts, Array
 
-action :activate do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -activate"
+action_class do
+  def kickstart(cmd_params)
+    ard_cmd = 
+      '/System/Library/CoreServices/RemoteManagement/' +
+      'ARDAgent.app/Contents/Resources/kickstart'.freeze
+    execute "kickstart:#{cmd_params}" do
+      command "#{ard_cmd} #{cmd_params}"
+    end
   end
+end
+
+action :activate do
+  kickstart('-activate')
 end
 
 action :deactivate do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -deactivate"
-  end
-end
-
-action :install do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -install #{new_resource.install_package}"
-  end
-end
-
-action :uninstall do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -uninstall #{new_resource.uninstall_options.join(' ')}"
-  end
-end
-
-action :stop do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -stop"
-  end
+ kickstart('-deactivate')
 end
 
 action :restart do
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -restart #{new_resource.restart_options.join(' ')}"
-  end
+  kickstart("-restart #{new_resource.restart_options.join(' ')}")  
 end
 
 action :configure do
   configure_options = []
-  if new_resource.users
-    configure_options.insert(0, "-users #{new_resource.users.join(',')}")
-  end
-  if new_resource.privs
-    configure_options.insert(0, "-privs #{new_resource.privs.join(' ')}")
-  end
-  if new_resource.access
-    configure_options.insert(0, "-access #{new_resource.access}")
+  [users, privs, access].each do |k|
+    next unless new_resource.send(kickstart)
+    configure_options << "-#{k} #{new_resource.send(k).join(',')}")
   end
   if new_resource.allow_access_for
     configure_options.insert(0, "-allowAccessFor #{new_resource.allow_access_for}")
@@ -69,7 +49,5 @@ action :configure do
   if new_resource.clientopts
     configure_options.insert(0, "-clientopts #{new_resource.clientopts.join(' ')}")
   end
-  execute BASE_COMMAND do
-    command "#{BASE_COMMAND} -configure #{configure_options.join(' ')}"
-  end
+  kickstart("-configure #{configure_options.join(' ')}")
 end
