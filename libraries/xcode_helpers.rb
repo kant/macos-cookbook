@@ -1,5 +1,5 @@
-module Xcode
-  module Helper
+module Macos
+  module XcodeHelpers
     def xcversion_command
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
