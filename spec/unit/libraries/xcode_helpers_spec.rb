@@ -1,43 +1,40 @@
 require 'spec_helper'
 include Macos::XcodeHelpers
 
-describe Macos::XcodeHelpers, '#xcversion_version' do
-  context 'When a version is given with three decimal points' do
-    it 'One decimal returns just the first integer' do
+describe Macos::XcodeHelpers, '#cask_app_needs_reinstall?' do
+  context 'When the version is three digits long and both the MINOR and MATCH versions end in zero' do
+    it 'One decimal returns just the first integery' do
+      expect(xcversion_version('10.0.0')).to eq '10'
+    end
+  end
+
+  context 'When the version is three digits long and only the PATCH version ends in zero' do
+    it 'One decimal returns just the first integery' do
+      expect(xcversion_version('10.0.1')).to eq '10.0.1'
+    end
+  end
+
+  context 'When the version is three digits long and only the MINOR version ends in zero' do
+    it 'One decimal returns just the first integery' do
+      expect(xcversion_version('10.3.0')).to eq '10.3'
+    end
+  end
+
+  context 'When the version is three digits long and neither the MINOR or PATCH versions end in zero' do
+    it 'One decimal returns just the first integery' do
+      expect(xcversion_version('10.3.1')).to eq '10.3.1'
+    end
+  end
+
+  context 'When the version is two digits long and the MINOR version ends in zero' do
+    it 'One decimal returns just the first integery' do
       expect(xcversion_version('10.0')).to eq '10'
     end
   end
+
+  context 'When the version is two digits long and the MINOR version does not end in zero' do
+    it 'One decimal returns just the first integery' do
+      expect(xcversion_version('10.6')).to eq '10.6'
+    end
+  end
 end
-
-#   context 'When app is installed as cask but install path does not exist' do
-#     before do
-#       allow(File).to receive(:exist?).and_return(false)
-#       allow(self).to receive(:app_installed_as_cask?).and_return(true)
-#     end
-
-#     it 'needs to be reinstalled' do
-#       expect(cask_app_needs_reinstall?('foo-bar', '/Applications/Foo Bar.app')).to be true
-#     end
-#   end
-
-#   context 'When app is not installed' do
-#     before do
-#       allow(File).to receive(:exist?).and_return(false)
-#       allow(self).to receive(:app_installed_as_cask?).and_return(false)
-#     end
-
-#     it 'does not need to be reinstalled' do
-#       expect(cask_app_needs_reinstall?('foo-bar', '/Applications/Foo Bar.app')).to be false
-#     end
-#   end
-
-#   context 'When app is installed as cask and is at install path' do
-#     before do
-#       allow(File).to receive(:exist?).and_return(true)
-#       allow(self).to receive(:app_installed_as_cask?).and_return(true)
-#     end
-
-#     it 'does not need to be reinstalled' do
-#       expect(cask_app_needs_reinstall?('foo-bar', '/Applications/Foo Bar.app')).to be false
-#     end
-#   end

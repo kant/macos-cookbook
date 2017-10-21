@@ -54,3 +54,6 @@ module Macos
     end
   end
 end
+
+Chef::Recipe.include(Macos::XcodeHelpers)
+Chef::Resource.include(Macos::XcodeHelpers)

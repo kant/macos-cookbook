@@ -1,7 +1,7 @@
-include Xcode::Helper
+include Macos::XcodeHelpers
 
 resource_name :xcode
-default_action %i(setup install_xcode install_simulators)
+default_action %i(setup install_xcode)
 
 property :version, String, name_property: true
 property :path, String, default: '/Applications/Xcode.app'
