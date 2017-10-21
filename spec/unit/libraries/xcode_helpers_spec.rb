@@ -37,4 +37,11 @@ describe Macos::XcodeHelpers, '#cask_app_needs_reinstall?' do
       expect(xcversion_version('10.6')).to eq '10.6'
     end
   end
+
+  context 'When output is given' do
+    it 'the correct iOS simulator version' do
+      output = "iOS SDKs:\n\tiOS 11.0                      \t-sdk iphoneos11.0\n\niOS Simulator SDKs:\n\tSimulator - iOS 11.0          \t-sdk iphonesimulator11.0\n\nmacOS SDKs:\n\tmacOS 10.13                   \t-sdk macosx10.13\n\ntvOS SDKs:\n\ttvOS 11.0                     \t-sdk appletvos11.0\n\ntvOS Simulator SDKs:\n\tSimulator - tvOS 11.0         \t-sdk appletvsimulator11.0\n\nwatchOS SDKs:\n\twatchOS 4.0                   \t-sdk watchos4.0\n\nwatchOS Simulator SDKs:\n\tSimulator - watchOS 4.0       \t-sdk watchsimulator4.0\n\n"
+      expect(included_simulator_major_version(output)).to eq '11.0'
+    end
+  end
 end
