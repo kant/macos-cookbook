@@ -62,7 +62,7 @@ describe Macos::XcodeHelpers, '#cask_app_needs_reinstall?' do
     watchOS Simulator SDKs:
       Simulator - watchOS 4.0       	-sdk watchsimulator4.0
     HEREDOC
-      expect(included_simulator_major_version(output)).to eq '11.0'
+      expect(included_simulator_major_version(output)).to eq 11
     end
   end
 end
