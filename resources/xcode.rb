@@ -57,14 +57,14 @@ action :install do
   accept_license
 
   if property_is_set?(:ios_simulators)
-    install_simulator('iOS', simulator)
+    install_simulator('iOS', ios_simulators)
   end
 
   if property_is_set?(:tvos_simulators)
-    install_simulator('tvOS', simulator)
+    install_simulator('tvOS', tvos_simulators)
   end
 
   if property_is_set?(:watchos_simulators)
-    install_simulator('watchOS', simulator)
+    install_simulator('watchOS', watchos_simulators)
   end
 end
