@@ -53,7 +53,7 @@ end
 action :install do
   install_xcode_install_gem
   update_xcode_versions
-  install_xcode(new_resource.version)
+  install_xcode(new_resource.version) unless xcode_already_installed?(new_resource.version)
   accept_license
 
   if property_is_set?(:ios_simulators)
