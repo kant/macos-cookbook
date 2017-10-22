@@ -28,8 +28,8 @@ module Macos
       node['macos']['xcode']['version'] != shell_out("defaults read #{xcode_version}").stdout.strip
     end
 
-    def simulator_already_installed?(semantic_version)
-      available_simulator_versions.include?("#{semantic_version} Simulator (installed)")
+    def simulator_already_installed?(simulator_type, semantic_version)
+      available_simulator_versions.include?("#{simulator_type} #{semantic_version} Simulator (installed)")
     end
 
     def highest_semantic_simulator_version(major_version, simulators)

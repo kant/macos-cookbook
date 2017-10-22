@@ -50,7 +50,7 @@ action_class do
     execute "install #{version} Simulator" do
       environment DEVELOPER_CREDENTIALS
       command "#{xcversion_command} simulators --install='#{type} #{version}'"
-      not_if { simulator_already_installed?(version) }
+      not_if { simulator_already_installed?(type, version) }
     end
   end
 end
