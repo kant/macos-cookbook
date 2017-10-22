@@ -33,6 +33,8 @@ action_class do
   end
 
   def install_xcode(version)
+    version = version.match?(/\d{1,2}\.0/) ? version.split('.').first : version
+
     execute "install Xcode #{version}" do
       environment developer_credentials
       command "#{xcversion_command} install '#{xcversion_version(version)}'"
