@@ -12,14 +12,6 @@ property :watchos_simulators, Array, regex: [/\d{1,2}\.\d{0,2}(\.\d{0,3})?/]
 default_action :install
 
 action_class do
-  def developer_credentials
-    data_bag_item(:credentials, :apple_id)
-    {
-      XCODE_INSTALL_USER:     data_bag_item['apple_id'],
-      XCODE_INSTALL_PASSWORD: data_bag_item['password'],
-    }
-  end
-
   def install_xcode_install_gem
     chef_gem 'xcode-install' do
       options('--no-document')

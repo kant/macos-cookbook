@@ -1,5 +1,12 @@
 module Macos
   module XcodeHelpers
+    def developer_credentials
+      {
+        XCODE_INSTALL_USER: data_bag_item(:credentials, :apple_id)['apple_id'],
+        XCODE_INSTALL_PASSWORD: data_bag_item(:credentials, :apple_id)['password'],
+      }
+    end
+
     def xcversion_command
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
