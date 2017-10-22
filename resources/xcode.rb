@@ -1,14 +1,15 @@
 include Macos::XcodeHelpers
 
 resource_name :xcode
-default_action %i(setup install_xcode)
 
 property :version, String, name_property: true, regex: [/\d{1,2}(\.\d{0,2})?(\.\d{0,3})?/]
 property :path, String, default: '/Applications/Xcode.app'
 
-property :ios_simulators, Array
-property :tvos_simulators, Array
-property :watchos_simulators, Array
+property :ios_simulators, Array, regex: [/\d{1,2}\.\d{0,2}(\.\d{0,3})?/]
+property :tvos_simulators, Array, regex: [/\d{1,2}\.\d{0,2}(\.\d{0,3})?/]
+property :watchos_simulators, Array, regex: [/\d{1,2}\.\d{0,2}(\.\d{0,3})?/]
+
+default_action :install
 
 action_class do
   def developer_credentials
@@ -49,7 +50,7 @@ action_class do
   end
 
   def install_simulator(type, version)
-    execute "install #{version} Simulator" do
+    execute "install #{type} #{version} Simulator" do
       environment DEVELOPER_CREDENTIALS
       command "#{xcversion_command} simulators --install='#{type} #{version}'"
       not_if { simulator_already_installed?(type, version) }
