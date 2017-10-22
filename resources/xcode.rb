@@ -43,7 +43,7 @@ action_class do
 
   def install_simulator(type, version)
     execute "install #{type} #{version} Simulator" do
-      environment DEVELOPER_CREDENTIALS
+      environment developer_credentials
       command "#{xcversion_command} simulators --install='#{type} #{version}'"
       not_if { simulator_already_installed?(type, version) }
     end
