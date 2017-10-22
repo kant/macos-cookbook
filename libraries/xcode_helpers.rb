@@ -14,7 +14,7 @@ module Macos
     def xcode_already_installed?(semantic_version)
       xcversion_output = shell_out("#{xcversion_command} installed").stdout.split
       installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
-      installed_xcodes.include?(semantic_version)
+      installed_xcodes.include?(xcversion_version(semantic_version))
     end
 
     def xcversion_version(semantic_version)
