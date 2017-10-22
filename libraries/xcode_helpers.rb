@@ -14,6 +14,10 @@ module Macos
       split_version = semantic_version.split('.')
       if split_version.length == 2 && split_version.last == '0'
         split_version.first
+      elsif split_version.length == 3 && split_version.last(2) == %w(0 0)
+        split_version.first
+      elsif split_version.length == 3 && split_version.last == '0'
+        split_version.first(2).join('.')
       else
         semantic_version
       end
@@ -38,11 +42,8 @@ module Macos
       end
     end
 
-    def included_simulator_major_version(xcodebuild_showsdks_output)
-      sdks = xcodebuild_showsdks_output || shell_out!('/usr/bin/xcodebuild -showsdks').stdout
-      version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
-      included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
-      included_simulator[:version].split('.').first.to_i
+    def included_simulator_major_version
+      shell_out!('xcodebuild -version -sdk iphonesimulator').split(': ').last.chomp.chomp
     end
 
     def simulator_list
@@ -50,7 +51,16 @@ module Macos
     end
 
     def available_simulator_versions
-      shell_out!("#{xcversion_command} simulators").stdout
+      sims = shell_out!("#{xcversion_command} simulators").stdout
+      mapping = {}
+      sims.each do |sim|
+        mapping[sim.first] = []
+      end
+
+      sims.each do |sim|
+        mapping[sim.first].push(sim.last)
+      end
+      mapping
     end
   end
 end
