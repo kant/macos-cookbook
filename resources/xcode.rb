@@ -57,20 +57,14 @@ action :install do
   accept_license
 
   if property_is_set?(:ios_simulators)
-    ios_simulators.each do |simulator|
-      install_simulator('iOS', simulator)
-    end
+    install_simulator('iOS', simulator)
   end
 
   if property_is_set?(:tvos_simulators)
-    tvos_simulators.each do |simulator|
-      install_simulator('tvOS', simulator)
-    end
+    install_simulator('tvOS', simulator)
   end
 
   if property_is_set?(:watchos_simulators)
-    watchos_simulators.each do |simulator|
-      install_simulator('watchOS', simulator)
-    end
+    install_simulator('watchOS', simulator)
   end
 end
