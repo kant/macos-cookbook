@@ -54,7 +54,7 @@ module Xcode
     end
 
     def xcodebuild_showsdks_output
-      shell_out!('/usr/bin/xcodebuild -showsdks').stdout 
+      shell_out!('/usr/bin/xcodebuild -showsdks').stdout
     end
   end
 end

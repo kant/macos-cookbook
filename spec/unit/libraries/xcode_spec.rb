@@ -41,22 +41,22 @@ describe Xcode::Helper, '#xcversion_version?' do
   context 'When the working with the list of available simulators' do
     sdk_output = "iOS SDKs:
     iOS 11.0                      	-sdk iphoneos11.0
-  
+
   iOS Simulator SDKs:
     Simulator - iOS 11.0          	-sdk iphonesimulator11.0
-  
+
   macOS SDKs:
     macOS 10.13                   	-sdk macosx10.13
-  
+
   tvOS SDKs:
     tvOS 11.0                     	-sdk appletvos11.0
-  
+
   tvOS Simulator SDKs:
     Simulator - tvOS 11.0         	-sdk appletvsimulator11.0
-  
+
   watchOS SDKs:
     watchOS 4.0                   	-sdk watchos4.0
-  
+
   watchOS Simulator SDKs:
     Simulator - watchOS 4.0       	-sdk watchsimulator4.0"
 
