@@ -37,29 +37,10 @@ describe Xcode::Helper, '#xcversion_version?' do
       expect(xcversion_version('10.6')).to eq '10.6'
     end
   end
+end
 
-  context 'When the working with the list of available simulators' do
-    sdk_output = "iOS SDKs:
-    iOS 11.0                      	-sdk iphoneos11.0
-
-  iOS Simulator SDKs:
-    Simulator - iOS 11.0          	-sdk iphonesimulator11.0
-
-  macOS SDKs:
-    macOS 10.13                   	-sdk macosx10.13
-
-  tvOS SDKs:
-    tvOS 11.0                     	-sdk appletvos11.0
-
-  tvOS Simulator SDKs:
-    Simulator - tvOS 11.0         	-sdk appletvsimulator11.0
-
-  watchOS SDKs:
-    watchOS 4.0                   	-sdk watchos4.0
-
-  watchOS Simulator SDKs:
-    Simulator - watchOS 4.0       	-sdk watchsimulator4.0"
-
+describe Xcode::Helper, '#highest_semantic_simulator_version' do
+  context 'when finding the highest semantic simulator version' do
     simulators = [['Xcode', '9.0'],
                   ['iOS', '8.1'],
                   ['iOS', '8.2'],
@@ -109,18 +90,50 @@ describe Xcode::Helper, '#xcversion_version?' do
                   ['watchOS', '3.2'],
                   ['tvOS', '10.2']]
 
-    it 'returns the full iOS version' do
+    it 'returns the highest semantic version in the list' do
       major_version = '10'
       expect(highest_semantic_simulator_version(major_version, simulators)).to eq 'iOS 10.3.1'
     end
+  end
+end
 
+describe Xcode::Helper, '#simulator_already_installed?' do
+  context 'when checking to see if a simulator is already installed' do
     it 'returns true if the simulator is already installed' do
+      skip
       version = 10
       expect(simulator_already_installed?(version)).to be true
     end
+  end
+end
 
-    it 'finds the already-installed simulator version' do
-      expect(included_simulator_major_version(sdk_output)).to eq '11'
+describe Xcode::Helper, '#included_simulator_major_version' do
+  context 'when given the output of xcodebuild -showsdks' do
+    sdk_output = <<-OUTPUT
+      iOS SDKs:
+      iOS 11.0                      	-sdk iphoneos11.0
+
+    iOS Simulator SDKs:
+      Simulator - iOS 11.0          	-sdk iphonesimulator11.0
+
+    macOS SDKs:
+      macOS 10.13                   	-sdk macosx10.13
+
+    tvOS SDKs:
+      tvOS 11.0                     	-sdk appletvos11.0
+
+    tvOS Simulator SDKs:
+      Simulator - tvOS 11.0         	-sdk appletvsimulator11.0
+
+    watchOS SDKs:
+      watchOS 4.0                   	-sdk watchos4.0
+
+    watchOS Simulator SDKs:
+      Simulator - watchOS 4.0       	-sdk watchsimulator4.0
+    OUTPUT
+
+    it 'returns the major version of the simulator that is installed' do
+      expect(included_simulator_major_version(sdk_output)).to eq 11
     end
   end
 end

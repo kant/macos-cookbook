@@ -38,7 +38,7 @@ module Xcode
       end
     end
 
-    def included_simulator_major_version(sdks)
+    def included_simulator_major_version(sdks = nil)
       sdks ||= xcodebuild_showsdks_output
       version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
       included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
