@@ -30,6 +30,7 @@ action :install_xcode do
     environment DEVELOPER_CREDENTIALS
     command "#{xcversion_command} install '#{xcversion_version(new_resource.version)}'"
     not_if { xcode_already_installed?(new_resource.version) }
+    live_stream true
   end
 end
 
