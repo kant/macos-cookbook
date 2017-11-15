@@ -4,10 +4,11 @@ module Xcode
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
 
-    def requested_xcode_already_installed?(semantic_version)
+    def requested_xcode_already_installed?(semantic_version = nil)
+      version = semantic_version || node['macos']['xcode']['version']
       xcversion_output = shell_out(xcversion_command, 'installed').stdout.split
       installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
-      installed_xcodes.include?(semantic_version)
+      installed_xcodes.include?(version)
     end
 
     def xcversion_version(semantic_version)

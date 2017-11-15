@@ -27,6 +27,3 @@ module MacOS
     end
   end
 end
-
-Chef::Recipe.include(MacOS::PlistBuddyHelpers)
-Chef::Resource.include(MacOS::PlistBuddyHelpers)
