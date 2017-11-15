@@ -24,12 +24,14 @@ action :install_xcode do
   execute 'update available Xcode versions' do
     environment DEVELOPER_CREDENTIALS
     command "#{xcversion_command} update"
+    not_if { requested_xcode_already_installed?(new_resource.version) }
   end
 
   execute "install Xcode #{new_resource.version}" do
     environment DEVELOPER_CREDENTIALS
     command "#{xcversion_command} install '#{xcversion_version(new_resource.version)}'"
-    not_if { xcode_already_installed?(new_resource.version) }
+    subscribes :run, 'execute[update available Xcode versions]', :immediately
+    action :nothing
   end
 end
 

@@ -4,8 +4,8 @@ module Xcode
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
 
-    def xcode_already_installed?(semantic_version)
-      xcversion_output = shell_out("#{xcversion_command} installed").stdout.split
+    def requested_xcode_already_installed?(semantic_version)
+      xcversion_output = shell_out(xcversion_command, 'installed').stdout.split
       installed_xcodes = xcversion_output.values_at(*xcversion_output.each_index.select(&:even?))
       installed_xcodes.include?(semantic_version)
     end
@@ -21,7 +21,7 @@ module Xcode
 
     def requested_xcode_not_at_path
       xcode_version = '/Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString'
-      node['macos']['xcode']['version'] != shell_out("defaults read #{xcode_version}").stdout.strip
+      node['macos']['xcode']['version'] != shell_out('defaults', 'read', xcode_version).stdout.strip
     end
 
     def simulator_already_installed?(semantic_version)
@@ -40,7 +40,7 @@ module Xcode
 
     def included_simulator_major_version
       version_matcher    = /\d{1,2}\.\d{0,2}\.?\d{0,3}/
-      sdks               = shell_out!('/usr/bin/xcodebuild -showsdks').stdout
+      sdks               = shell_out!('/usr/bin/xcodebuild', '-showsdks').stdout
       included_simulator = sdks.match(/Simulator - iOS (?<version>#{version_matcher})/)
       included_simulator[:version].split('.').first.to_i
     end
@@ -50,7 +50,7 @@ module Xcode
     end
 
     def available_simulator_versions
-      shell_out!("#{xcversion_command} simulators").stdout
+      shell_out!(xcversion_command, 'simulators').stdout
     end
   end
 end
