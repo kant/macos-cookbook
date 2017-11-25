@@ -1,5 +1,7 @@
 module MacOS
   module PlistBuddyHelpers
+    puts "\n"
+    puts "\t\t>> begin PlistBuddyHelpers"
     def convert_to_string_from_data_type(value)
       data_type_cases = { Array => "array #{value}",
                           Integer => "integer #{value}",
@@ -9,6 +11,14 @@ module MacOS
                           String => "string #{value}",
                           Float => "float #{value}" }
       data_type_cases[value.class]
+    end
+
+    def needs_conversion?(path)
+      return true if shell_out('/usr/bin/file', '--brief', '--mime', path).stdout =~ /binary/i
+    end
+
+    def convert_to_binary(path)
+      shell_out('/usr/bin/plutil', '-convert', 'binary1', path)
     end
 
     def format_plistbuddy_command(action_property, plist_entry, plist_value = nil)
@@ -26,6 +36,8 @@ module MacOS
         plist_value
       end
     end
+    puts "\t\t>> end PlistBuddyHelpers"
+    puts "\n"
   end
 end
 
