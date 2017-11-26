@@ -34,11 +34,19 @@ module MacOS
       "/usr/libexec/PlistBuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
     end
 
-    def method_finder(class_name)
+    def instance_method_finder(class_name)
       class_instance_methods = class_name.instance_methods - class_name.superclass.instance_methods
-      puts "         ==> #{class_name}".colorize(:green).bold
+      puts "        ===> #{class_name}".colorize(:green).bold
       class_instance_methods.sort.each do |method|
-        puts "        ==> #{method}".colorize(:green)
+        puts "            ##{method}".colorize(:green)
+      end
+    end
+
+    def instance_variable_finder(class_name)
+      class_instance_variables = class_name.instance_variables - class_name.superclass.instance_variables
+      puts "        ===> #{class_name}".colorize(:red).bold
+      class_instance_variables.sort.each do |variable|
+        puts "            @#{variable}".colorize(:red)
       end
     end
 
