@@ -1,3 +1,5 @@
+require 'colorize'
+
 resource_name :plistbuddy
 
 property :path, String, desired_state: true
@@ -14,23 +16,25 @@ default_action :set
 
 action_class do
   puts "\n"
-  puts "\t\t> begin action_class"
+  puts "\t\t> begin action_class".colorize(:light_blue).bold
   extend MacOS::PlistBuddyHelpers
 
   def plistbuddy(action)
     puts "\n"
-    puts "\t\t\t=> inside plistbuddy..."
-    puts "\t\t\t=> new_resource.foo: #{new_resource.foo}"
+    puts "\t\t\t=> inside plistbuddy...".colorize(:yellow).bold
+    puts "\t\t\t=> new_resource.foo: ".colorize(:yellow).bold
+    print new_resource.foo.to_s.colorize(:green)
     [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
   end
 
   def entry_missing?
     puts "\n"
-    puts "\t\t\t=> inside entry_missing?..."
-    puts "\t\t\t=> new_resource.bar: #{new_resource.bar}"
+    puts "\t\t\t=> inside entry_missing?...".colorize(:yellow).bold
+    puts "\t\t\t=> new_resource.bar: "
+    print new_resource.bar.to_s.colorize(:green)
     return true if shell_out(plistbuddy(:print)).error?
   end
-  puts "\t\t> end action_class"
+  puts "\t\t> end action_class".colorize(:light_blue)
   puts "\n"
 end
 
@@ -61,7 +65,7 @@ end
 
 load_current_value do |desired|
   puts "\n"
-  puts "\t\t> begin load_current_value"
+  puts "\t\t> begin load_current_value".colorize(:red)
   # puts "\t\t> desired.value: #{desired.value}"
   # puts "\t\t> desired.entry: #{desired.entry}"
   # puts "\t\t> desired.path: #{desired.path}"
@@ -100,7 +104,7 @@ load_current_value do |desired|
   # puts "\t\t> value: #{new_resource.value}"
   # value desired.value if result.stdout.chomp != desired.value.to_s
   # puts "\t\t> value (after): #{value}"
-  puts "\t\t> end load_current_value"
+  puts "\t\t> end load_current_value".colorize(:red)
   puts "\n"
 end
 
@@ -143,7 +147,7 @@ end
 
 action :set do
   puts "\n"
-  puts "\t\t>>> begin action :set"
+  puts "\t\t>>> begin action :set".colorize(:magenta).bold
   puts "\t\t> current_value: #{current_value}"
   # puts "current_value.class: #{current_value.class}"
   # puts "current_value.ancestors: #{current_value.ancestors}"
@@ -159,7 +163,7 @@ action :set do
     only_if { entry_missing? }
   end
 
-  puts "\t\t>>> end action :set"
+  puts "\t\t>>> end action :set".colorize(:magenta).bold
   puts "\n"
 end
 
