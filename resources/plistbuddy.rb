@@ -13,11 +13,11 @@ property :is_binary, [TrueClass, FalseClass]
 
 default_action :set
 
-action_class do
+action_class do |provides|
   print "\n"
   puts '>>> action_class BEGIN <<<'.colorize(:blue).bold
-  extend MacOS::PlistBuddyHelpers
-  library_helper_method('Outside a method body in action_class.')
+  # extend MacOS::PlistBuddyHelpers
+  # library_helper_method('Outside a method body in action_class.')
 
   def action_class_method(message)
     print "\n"
@@ -31,6 +31,8 @@ action_class do
     library_helper_method('Inside a method body in action_class')
     puts ' -> action_class_method END'.colorize(:cyan).italic
   end
+
+  puts provides.methods
 
   # def plistbuddy(action)
   #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
@@ -77,6 +79,12 @@ action :set do
   action_class_method('Inside of an action.')
   print ' -> current_value inside action: '.colorize(:light_blue).bold
   puts " -> #{current_value}".colorize(:light_blue).bold
+
+  print '        new_resource.desired_true: '.colorize(:light_cyan).bold
+  puts new_resource.desired_true.to_s.colorize(:light_cyan)
+
+  print '        new_resource.desired_false: '.colorize(:light_cyan).bold
+  puts new_resource.desired_false.to_s.colorize(:light_cyan)
 
   # converge_if_changed :value do
   #   puts "\t\t> converge_if_changed"
