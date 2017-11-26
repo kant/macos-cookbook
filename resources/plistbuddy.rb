@@ -33,14 +33,14 @@ action_class do |provider|
     puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
 
     library_helper_method('Inside a method body in action_class.')
-    instance_method_finder(new_resource.class)
-    instance_variable_finder(new_resource.class)
+    # instance_method_finder(new_resource.class)
+    # instance_variable_finder(new_resource.class)
 
     puts '---> action_class_method'.colorize(:cyan).italic
   end
 
-  instance_method_finder(provider)
-  instance_variable_finder(provider)
+  # instance_method_finder(provider)
+  # instance_variable_finder(provider)
 
   # def plistbuddy(action)
   #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
@@ -56,8 +56,8 @@ load_current_value do |desired|
   print "\n"
   puts '+++> LOAD_CURRENT_VALUE'.colorize(:light_blue).bold
 
-  instance_method_finder(desired.class)
-  instance_variable_finder(desired.class)
+  # instance_method_finder(desired.class)
+  # instance_variable_finder(desired.class)
 
   library_helper_method('Outside a method body inside load_current_value.')
 
@@ -102,8 +102,8 @@ action :set do
   puts "\n"
 
   execute 'echo "execute resource inside an action"' do
-    library_helper_method('Inside a resource -> inside an action.')
-    action_class_method('Inside a resource -> inside an action.')
+    library_helper_method('Inside a resource > inside an action.')
+    action_class_method('Inside a resource > inside an action.')
     live_stream true
   end
 
