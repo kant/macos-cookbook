@@ -1,7 +1,7 @@
-library_helper_method('Inside a recipe.')
+library_helper_method('(2) Inside a recipe.')
 
 plistbuddy 'show hidden files' do
-  library_helper_method('Inside a resource > inside a recipe.')
+  library_helper_method('(3) Inside a resource > inside a recipe.')
   path '/Users/vagrant/Library/Preferences/com.apple.finder.plist'
   entry 'AppleShowAllFiles'
   value true

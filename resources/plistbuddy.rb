@@ -18,7 +18,7 @@ action_class do
 
   extend MacOS::PlistBuddyHelpers
 
-  library_helper_method('Outside a method body in action_class.')
+  library_helper_method('(1) Outside a method body in action_class.')
 
   def action_class_method(message)
     puts '   + action_class_method'.colorize(:cyan).bold
@@ -30,7 +30,7 @@ action_class do
     print '       new_resource.set_by_resource [action_class_method]: '.colorize(:light_cyan)
     puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
 
-    library_helper_method('Inside a method body in action_class.')
+    library_helper_method('(6) Inside a method body in action_class.')
     # instance_method_finder(new_resource.class)
     # instance_variable_finder(new_resource.class)
 
@@ -53,7 +53,7 @@ end
 load_current_value do |desired|
   puts "\n"
   puts '---> LOAD_CURRENT_VALUE [GO]'.colorize(:light_blue).bold
-  library_helper_method('Outside a method body inside load_current_value.')
+  library_helper_method('(4) Outside a method body inside load_current_value.')
   # instance_method_finder(desired.class)
   # instance_variable_finder(desired.class)
   get_from_system 'setting this value via a system call'
@@ -71,8 +71,8 @@ end
 
 action :set do
   puts '---> ACTION [GO]'.colorize(:red).bold
-  library_helper_method('Inside an action.')
-  action_class_method('Inside an action.')
+  library_helper_method('(5) Inside an action.')
+  action_class_method('(1) Inside an action.')
   print "---> CURRENT_VALUE: #{current_value}\n\n".colorize(:green).bold
   print '       new_resource.get_from_system [action]: '.colorize(:light_cyan)
   puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
@@ -81,8 +81,8 @@ action :set do
 
   converge_if_changed :get_from_system do
     puts '--> CONVERGE_IF_CHANGED [GO]'.colorize(:yellow).bold
-    library_helper_method('Inside converge_if_changed.')
-    action_class_method('Inside converge_if_changed.')
+    library_helper_method('(7) Inside converge_if_changed.')
+    action_class_method('(2) Inside converge_if_changed.')
     print '       new_resource.get_from_system [converge_if_changed]: '.colorize(:light_cyan)
     puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
 
@@ -94,8 +94,8 @@ action :set do
   puts "\n"
 
   execute 'echo "execute resource inside an action"' do
-    library_helper_method('Inside a resource > inside an action.')
-    action_class_method('Inside a resource > inside an action.')
+    library_helper_method('(8) Inside a resource > inside an action.')
+    action_class_method('(3) Inside a resource > inside an action.')
     live_stream true
   end
 
