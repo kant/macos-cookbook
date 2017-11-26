@@ -95,11 +95,15 @@ action :set do
   print '        new_resource.desired_false: '.colorize(:light_cyan).bold
   puts new_resource.desired_false.to_s.colorize(:light_cyan)
 
-  # converge_if_changed :value do
-  #   puts "\t\t> converge_if_changed"
-  #   puts "\t\t> new_resource.value: #{new_resource.value}"
-  #   execute [format_plistbuddy_command(:set, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-  # end
+  converge_if_changed do
+    library_helper_method('Inside of converge_if_changed.')
+    action_class_method('Inside of converge_if_changed.')
+    print '        new_resource.desired_true: '.colorize(:light_cyan).bold
+    puts new_resource.desired_true.to_s.colorize(:light_cyan)
+
+    print '        new_resource.desired_false: '.colorize(:light_cyan).bold
+    puts new_resource.desired_false.to_s.colorize(:light_cyan)
+  end
 
   execute 'echo "this is inside of an action"' do
     library_helper_method('Inside an execute resource, inside an action.')
