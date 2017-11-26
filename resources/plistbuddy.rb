@@ -16,8 +16,8 @@ default_action :set
 action_class do |provider|
   print "\n"
   puts '>>> action_class BEGIN <<<'.colorize(:blue).bold
-  # extend MacOS::PlistBuddyHelpers
-  # library_helper_method('Outside a method body in action_class.')
+  extend MacOS::PlistBuddyHelpers
+  library_helper_method('Outside a method body in action_class.')
 
   def action_class_method(message)
     print "\n"
@@ -29,14 +29,11 @@ action_class do |provider|
     print '        new_resource.desired_false: '.colorize(:light_cyan).bold
     puts new_resource.desired_false.to_s.colorize(:light_cyan)
     library_helper_method('Inside a method body in action_class')
+    method_finder(new_resource.class)
     puts ' -> action_class_method END'.colorize(:cyan).italic
   end
 
-  provider_methods = provider.instance_methods.sort - provider.superclass.instance_methods
-  puts "+++ provider methods: #{provider_methods}".colorize(:green)
-
-  new_resource_methods = new_resource.instance_methods.sort - new_resource.superclass.instance_methods
-  puts "+++ new_resource methods: #{new_resource_methods}".colorize(:green)
+  method_finder(provider)
 
   # def plistbuddy(action)
   #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
@@ -63,9 +60,7 @@ load_current_value do |desired|
   print "\n"
   puts '    load_current_value BEGIN'.colorize(:light_blue)
 
-  desired_methods = desired.instance_methods.sort - desired.superclass.instance_methods
-  puts "desired methods: #{desired_methods}".colorize(:green)
-
+  method_finder(desired.class)
   library_helper_method('Outside a method body inside load_current_value.')
 
   print '        desired_true: '.colorize(:light_cyan).bold

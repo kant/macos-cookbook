@@ -34,6 +34,13 @@ module MacOS
       "/usr/libexec/PlistBuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
     end
 
+    def method_finder(class_name)
+      class_instance_methods = class_name.instance_methods - class_name.superclass.instance_methods
+      class_instance_methods.sort.each do |method|
+        puts "==> #{method}".colorize(:green)
+      end
+    end
+
     private
 
     def args_formatter(action_property, plist_value)
