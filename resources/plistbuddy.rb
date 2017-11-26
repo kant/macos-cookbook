@@ -16,7 +16,8 @@ default_action :set
 action_class do
   puts '>>> action_class BEGIN <<<'.colorize(:blue).bold
   extend MacOS::PlistBuddyHelpers
-  library_helper_method
+  library_helper_method('Outside a method body.')
+
   def action_class_method
     print "\n"
     puts '    action_class_method BEGIN'.colorize(:cyan).italic
@@ -25,6 +26,7 @@ action_class do
 
     print '        new_resource.desired_false: '.colorize(:light_cyan)
     puts new_resource.desired_false.to_s.colorize(:light_cyan).bold
+    library_helper_method('Inside a method body.')
     puts '    action_class_method END'.colorize(:cyan).italic
   end
 
@@ -41,7 +43,7 @@ end
 load_current_value do
   print "\n"
   puts '==> load_current_value BEGIN'.colorize(:light_blue).bold
-  library_helper_method
+  library_helper_method('Inside load_current_value')
   puts '==> load_current_value END'.colorize(:light_blue).bold
   print "\n"
 end
@@ -50,7 +52,7 @@ action :set do
   puts '>>> action :set BEGIN <<<'.colorize(:red).bold
   puts "    current_value: #{current_value}".colorize(:red)
 
-  library_helper_method
+  library_helper_method('Inside an action')
   action_class_method
 
   # converge_if_changed :value do

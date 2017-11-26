@@ -3,10 +3,10 @@ require 'colorize'
 module MacOS
   module PlistBuddyHelpers
     puts '---> Helpers BEGIN <---'.colorize(:magenta)
-    def library_helper_method
-      puts '    library_helper_method BEGIN'.colorize(:light_magenta)
-      puts '        do stuff here'
-      puts '    library_helper_method END'.colorize(:light_magenta)
+    def library_helper_method(message)
+      puts '    library_helper_method BEGIN'.colorize(:light_magenta).italic
+      puts "        #{message}".colorize(:light_magenta)
+      puts '    library_helper_method END'.colorize(:light_magenta).italic
     end
 
     def convert_to_string_from_data_type(value)
