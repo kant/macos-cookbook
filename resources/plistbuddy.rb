@@ -15,12 +15,10 @@ property :is_binary, [TrueClass, FalseClass]
 default_action :set
 
 action_class do
-  puts "\n"
   puts '---> begin action_class'.colorize(:light_blue).bold
   extend MacOS::PlistBuddyHelpers
 
   def plistbuddy(action)
-    puts "\n"
     puts "\t---> inside plistbuddy...".colorize(mode: :italic)
     print "\t     new_resource.foo: ".colorize(mode: :italic)
     puts new_resource.foo.to_s.colorize(:green).bold
@@ -28,7 +26,6 @@ action_class do
   end
 
   def entry_missing?
-    puts "\n"
     puts "\t---> inside entry_missing?...".colorize(mode: :italic)
     print "\t     new_resource.bar: ".colorize(mode: :italic)
     puts new_resource.bar.to_s.colorize(:green).bold
@@ -38,7 +35,6 @@ action_class do
 end
 
 load_current_value do |desired|
-  puts "\n"
   puts "\t\t---> begin load_current_value".colorize(:red).bold
   puts "\t\t     entry: #{entry}"
   puts "\t\t     path: #{path}"
@@ -56,7 +52,6 @@ load_current_value do |desired|
 end
 
 action :set do
-  puts "\n"
   puts "\t>>> begin action :set".colorize(:magenta).bold
   puts "\t---> current_value: #{current_value}".colorize(:cyan).bold
 
