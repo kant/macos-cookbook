@@ -4,9 +4,9 @@ module MacOS
   module PlistBuddyHelpers
     puts '---> Helpers BEGIN <---'.colorize(:magenta)
     def library_helper_method(message)
-      puts '     > library_helper_method BEGIN'.colorize(:light_magenta).italic
-      puts "         #{message}".colorize(:light_magenta).bold
-      puts '     > library_helper_method END'.colorize(:light_magenta).italic
+      puts '       + library_helper_method BEGIN'.colorize(:light_magenta).italic
+      puts "           #{message}".colorize(:light_magenta).bold
+      puts '       + library_helper_method END'.colorize(:light_magenta).italic
     end
 
     def convert_to_string_from_data_type(value)
@@ -38,7 +38,7 @@ module MacOS
       class_instance_methods = class_name.instance_methods - class_name.superclass.instance_methods
       puts "   * #{class_name}".colorize(:green).bold
       class_instance_methods.sort.each do |method|
-        puts "     #{method}".colorize(:green)
+        puts "     - #{method}".colorize(:green)
       end
     end
 
@@ -46,7 +46,7 @@ module MacOS
       class_instance_variables = class_name.instance_variables - class_name.superclass.instance_variables
       puts "   * #{class_name}".colorize(:red).bold
       class_instance_variables.sort.each do |variable|
-        puts "     #{variable}".colorize(:red)
+        puts "     - #{variable}".colorize(:red)
       end
     end
 
