@@ -29,11 +29,15 @@ action_class do |provider|
     print '        new_resource.desired_false: '.colorize(:light_cyan).bold
     puts new_resource.desired_false.to_s.colorize(:light_cyan)
     library_helper_method('Inside a method body in action_class')
-    method_finder(new_resource.class)
+
+    instance_method_finder(new_resource.class)
+    instance_variable_finder(new_resource.class)
+
     puts ' -> action_class_method END'.colorize(:cyan).italic
   end
 
-  method_finder(provider)
+  instance_method_finder(provider)
+  instance_variable_finder(provider)
 
   # def plistbuddy(action)
   #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
@@ -60,7 +64,9 @@ load_current_value do |desired|
   print "\n"
   puts '    load_current_value BEGIN'.colorize(:light_blue)
 
-  method_finder(desired.class)
+  instance_method_finder(desired.class)
+  instance_variable_finder(desired.class)
+
   library_helper_method('Outside a method body inside load_current_value.')
 
   print '        desired_true: '.colorize(:light_cyan).bold
