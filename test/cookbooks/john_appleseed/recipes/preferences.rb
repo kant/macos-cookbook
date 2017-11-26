@@ -6,7 +6,7 @@ plistbuddy 'show hidden files' do
   entry 'AppleShowAllFiles'
   value true
   desired_true 'determined by the state of the system.'
-  desired_false 'determined by the values defined by the recipe or custom resource.'
+  desired_false 'determined by the properties defined by the recipe or resource (default values)'
 end
 
 # plistbuddy 'put the Dock on the left side' do

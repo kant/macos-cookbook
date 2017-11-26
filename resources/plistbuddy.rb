@@ -13,7 +13,7 @@ property :is_binary, [TrueClass, FalseClass]
 
 default_action :set
 
-action_class do |provides|
+action_class do |provider|
   print "\n"
   puts '>>> action_class BEGIN <<<'.colorize(:blue).bold
   # extend MacOS::PlistBuddyHelpers
@@ -32,7 +32,15 @@ action_class do |provides|
     puts ' -> action_class_method END'.colorize(:cyan).italic
   end
 
-  puts provides.methods
+  puts "provider.name: #{provider.name}"
+  puts "provider.resource_class: #{provider.resource_class}"
+  puts "provider.inspect: #{provider.inspect}"
+  puts "provider.display: #{provider.display}"
+  puts "provider.itself: #{provider.itself}"
+
+  puts provider.public_methods
+  puts provider.public_methods.include?(:dup)
+  puts provider.methods.include?(:dup)
 
   # def plistbuddy(action)
   #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
