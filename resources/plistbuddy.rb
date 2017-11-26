@@ -13,9 +13,9 @@ property :is_binary, [TrueClass, FalseClass]
 
 default_action :set
 
-action_class do |provider|
+action_class do
   print "\n"
-  puts '+++> ACTION_CLASS'.colorize(:blue).bold
+  puts '---> ACTION_CLASS [GO]'.colorize(:blue).bold
 
   extend MacOS::PlistBuddyHelpers
 
@@ -23,7 +23,7 @@ action_class do |provider|
 
   def action_class_method(message)
     print "\n"
-    puts '+++> action_class_method'.colorize(:cyan).bold
+    puts '   + action_class_method'.colorize(:cyan).bold
     puts "     #{message}".colorize(:cyan).italic
 
     print '       new_resource.desired_true: '.colorize(:light_cyan)
@@ -36,7 +36,7 @@ action_class do |provider|
     # instance_method_finder(new_resource.class)
     # instance_variable_finder(new_resource.class)
 
-    puts '---> action_class_method'.colorize(:cyan).italic
+    puts '   - action_class_method'.colorize(:cyan).italic
   end
 
   # instance_method_finder(provider)
@@ -49,12 +49,11 @@ action_class do |provider|
   # def entry_missing?
   #   return true if shell_out(plistbuddy(:print)).error?
   # end
-  puts '---> ACTION_CLASS'.colorize(:blue).bold
+  puts '---> ACTION_CLASS [STOP]'.colorize(:blue).bold
 end
 
 load_current_value do |desired|
-  print "\n"
-  puts '+++> LOAD_CURRENT_VALUE'.colorize(:light_blue).bold
+  puts '---> LOAD_CURRENT_VALUE [GO]'.colorize(:light_blue).bold
 
   # instance_method_finder(desired.class)
   # instance_variable_finder(desired.class)
@@ -70,12 +69,12 @@ load_current_value do |desired|
   puts desired.desired_true.to_s.colorize(:light_cyan)
   print '       desired.desired_false: '.colorize(:light_cyan).bold
   puts desired.desired_false.to_s.colorize(:light_cyan)
-  puts '---> LOAD_CURRENT_VALUE'.colorize(:light_blue).bold
+  puts '---> LOAD_CURRENT_VALUE [STOP]'.colorize(:light_blue).bold
 end
 
 action :set do
   print "\n"
-  puts '+++> ACTION'.colorize(:red).bold
+  puts '--> ACTION [GO]'.colorize(:red).bold
   library_helper_method('Inside an action.')
   action_class_method('Inside an action.')
   print ' * current_value inside action: '.colorize(:light_blue).bold
@@ -88,7 +87,7 @@ action :set do
   puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
 
   converge_if_changed do
-    puts '+++> CONVERGE_IF_CHANGED'.colorize(:yellow).bold
+    puts '--> CONVERGE_IF_CHANGED [GO]'.colorize(:yellow).bold
     library_helper_method('Inside converge_if_changed.')
     action_class_method('Inside converge_if_changed.')
     print '       new_resource.desired_true: '.colorize(:light_cyan)
@@ -96,7 +95,7 @@ action :set do
 
     print '       new_resource.desired_false: '.colorize(:light_cyan)
     puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
-    puts '---> CONVERGE_IF_CHANGED'.colorize(:yellow).bold
+    puts '---> CONVERGE_IF_CHANGED [STOP]'.colorize(:yellow).bold
   end
 
   puts "\n"
@@ -112,7 +111,7 @@ action :set do
   #   only_if { entry_missing? }
   # end
 
-  puts '---> ACTION'.colorize(:red).bold
+  puts '---> ACTION [STOP]'.colorize(:red).bold
 end
 
 # action :delete do

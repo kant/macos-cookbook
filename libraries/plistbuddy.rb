@@ -2,7 +2,7 @@ require 'colorize'
 
 module MacOS
   module PlistBuddyHelpers
-    puts '+++> HELPERS MODULE'.colorize(:magenta).bold
+    puts '---> HELPERS MODULE [GO]'.colorize(:magenta).bold
     def library_helper_method(message)
       puts '     + library_helper_method'.colorize(:light_magenta)
       puts "         #{message}".colorize(:light_magenta).italic
@@ -59,7 +59,7 @@ module MacOS
         plist_value
       end
     end
-    puts '---> HELPERS MODULE'.colorize(:magenta).bold
+    puts '---> HELPERS MODULE [STOP]'.colorize(:magenta).bold
   end
 end
 
