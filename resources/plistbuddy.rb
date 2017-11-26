@@ -15,47 +15,29 @@ default_action :set
 
 action_class do
   puts '---> ACTION_CLASS [GO]'.colorize(:blue).bold
-
+  
   extend MacOS::PlistBuddyHelpers
-
+  
   library_helper_method('(1) Outside a method body in action_class.')
-
+  
   def action_class_method(message)
     puts '   + action_class_method'.colorize(:cyan).bold
     puts "     #{message}".colorize(:cyan).italic
-
     print '       new_resource.get_from_system [action_class_method]: '.colorize(:light_cyan)
     puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
-
     print '       new_resource.set_by_resource [action_class_method]: '.colorize(:light_cyan)
     puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
-
     library_helper_method('(6) Inside a method body in action_class.')
-    # instance_method_finder(new_resource.class)
-    # instance_variable_finder(new_resource.class)
-
     puts '   - action_class_method'.colorize(:cyan).bold
   end
-
-  # instance_method_finder(provider)
-  # instance_variable_finder(provider)
-
-  # def plistbuddy(action)
-  #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-  # end
-
-  # def entry_missing?
-  #   return true if shell_out(plistbuddy(:print)).error?
-  # end
+  
   puts '---> ACTION_CLASS [STOP]'.colorize(:blue).bold
 end
 
 load_current_value do |desired|
-  puts "\n"
-  puts '---> LOAD_CURRENT_VALUE [GO]'.colorize(:light_blue).bold
+  puts "\n---> LOAD_CURRENT_VALUE [GO]".colorize(:light_blue).bold
   library_helper_method('(4) Outside a method body inside load_current_value.')
-  # instance_method_finder(desired.class)
-  # instance_variable_finder(desired.class)
+
   get_from_system 'setting this value via a system call'
 
   print '       get_from_system [load_current_value]: '.colorize(:light_cyan).bold
@@ -71,8 +53,10 @@ end
 
 action :set do
   puts '---> ACTION [GO]'.colorize(:red).bold
-  library_helper_method('(5) Inside an action.')
+  
   action_class_method('(1) Inside an action.')
+  library_helper_method('(5) Inside an action.')
+
   print "---> CURRENT_VALUE: #{current_value}\n\n".colorize(:green).bold
   print '       new_resource.get_from_system [action]: '.colorize(:light_cyan)
   puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
@@ -81,11 +65,12 @@ action :set do
 
   converge_if_changed :get_from_system do
     puts '--> CONVERGE_IF_CHANGED [GO]'.colorize(:yellow).bold
-    library_helper_method('(7) Inside converge_if_changed.')
+    
     action_class_method('(2) Inside converge_if_changed.')
+    library_helper_method('(7) Inside converge_if_changed.')
+    
     print '       new_resource.get_from_system [converge_if_changed]: '.colorize(:light_cyan)
     puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
-
     print '       new_resource.set_by_resource [converge_if_changed]: '.colorize(:light_cyan)
     puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
     puts '---> CONVERGE_IF_CHANGED [STOP]'.colorize(:yellow).bold
@@ -99,17 +84,5 @@ action :set do
     live_stream true
   end
 
-  # execute "add #{new_resource.entry} to #{new_resource.path.split('/').last}" do
-  #   command plistbuddy :add
-  #   only_if { entry_missing? }
-  # end
-
   puts '---> ACTION [STOP]'.colorize(:red).bold
 end
-
-# action :delete do
-#   execute "delete #{new_resource.entry} from plist" do
-#     command plistbuddy :delete
-#     not_if { entry_missing? }
-#   end
-# end
