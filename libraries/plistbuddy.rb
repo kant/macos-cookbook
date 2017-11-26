@@ -36,8 +36,9 @@ module MacOS
 
     def method_finder(class_name)
       class_instance_methods = class_name.instance_methods - class_name.superclass.instance_methods
+      puts "         ==> #{class_name}".colorize(:green).bold
       class_instance_methods.sort.each do |method|
-        puts "==> #{method}".colorize(:green)
+        puts "        ==> #{method}".colorize(:green)
       end
     end
 
