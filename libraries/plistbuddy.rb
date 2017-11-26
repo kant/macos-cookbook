@@ -5,7 +5,7 @@ module MacOS
     puts '---> Helpers BEGIN <---'.colorize(:magenta)
     def library_helper_method(message)
       puts '    library_helper_method BEGIN'.colorize(:light_magenta).italic
-      puts "        #{message}".colorize(:light_magenta)
+      puts "        #{message}".colorize(:light_magenta).bold
       puts '    library_helper_method END'.colorize(:light_magenta).italic
     end
 
