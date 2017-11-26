@@ -15,25 +15,28 @@ default_action :set
 
 action_class do |provider|
   print "\n"
-  puts '---> ACTION_CLASS [BEGIN]'.colorize(:blue).bold
+  puts '+++> ACTION_CLASS'.colorize(:blue).bold
+
   extend MacOS::PlistBuddyHelpers
+
   library_helper_method('Outside a method body in action_class.')
 
   def action_class_method(message)
     print "\n"
-    puts '   + action_class_method [begin]'.colorize(:cyan).italic
-    puts "     #{message}".colorize(:cyan)
-    print '       new_resource.desired_true: '.colorize(:light_cyan).bold
-    puts new_resource.desired_true.to_s.colorize(:light_cyan)
+    puts '+++> action_class_method'.colorize(:cyan).bold
+    puts "     #{message}".colorize(:cyan).italic
 
-    print '       new_resource.desired_false: '.colorize(:light_cyan).bold
-    puts new_resource.desired_false.to_s.colorize(:light_cyan)
+    print '       new_resource.desired_true: '.colorize(:light_cyan)
+    puts new_resource.desired_true.to_s.colorize(:light_cyan).italic
+
+    print '       new_resource.desired_false: '.colorize(:light_cyan)
+    puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
+
     library_helper_method('Inside a method body in action_class.')
-
     instance_method_finder(new_resource.class)
     instance_variable_finder(new_resource.class)
 
-    puts '   + action_class_method [end]'.colorize(:cyan).italic
+    puts '---> action_class_method'.colorize(:cyan).italic
   end
 
   instance_method_finder(provider)
@@ -46,12 +49,12 @@ action_class do |provider|
   # def entry_missing?
   #   return true if shell_out(plistbuddy(:print)).error?
   # end
-  puts '---> ACTION_CLASS [END]'.colorize(:blue).bold
+  puts '---> ACTION_CLASS'.colorize(:blue).bold
 end
 
 load_current_value do |desired|
   print "\n"
-  puts '---> LOAD_CURRENT_VALUE [BEGIN]'.colorize(:light_blue)
+  puts '+++> LOAD_CURRENT_VALUE'.colorize(:light_blue).bold
 
   instance_method_finder(desired.class)
   instance_variable_finder(desired.class)
@@ -67,35 +70,36 @@ load_current_value do |desired|
   puts desired.desired_true.to_s.colorize(:light_cyan)
   print '       desired.desired_false: '.colorize(:light_cyan).bold
   puts desired.desired_false.to_s.colorize(:light_cyan)
-  puts '---> LOAD_CURRENT_VALUE [END]'.colorize(:light_blue)
+  puts '---> LOAD_CURRENT_VALUE'.colorize(:light_blue).bold
 end
 
 action :set do
   print "\n"
-  puts '---> ACTION [BEGIN]'.colorize(:red).bold
+  puts '+++> ACTION'.colorize(:red).bold
   library_helper_method('Inside an action.')
   action_class_method('Inside an action.')
   print ' * current_value inside action: '.colorize(:light_blue).bold
   puts " - #{current_value}".colorize(:light_blue).bold
 
-  print '       new_resource.desired_true: '.colorize(:light_cyan).bold
-  puts new_resource.desired_true.to_s.colorize(:light_cyan)
+  print '       new_resource.desired_true: '.colorize(:light_cyan)
+  puts new_resource.desired_true.to_s.colorize(:light_cyan).italic
 
-  print '       new_resource.desired_false: '.colorize(:light_cyan).bold
-  puts new_resource.desired_false.to_s.colorize(:light_cyan)
+  print '       new_resource.desired_false: '.colorize(:light_cyan)
+  puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
 
   converge_if_changed do
-    puts '---> CONVERGE_IF_CHANGED [BEGIN]'.colorize(:yellow).bold
+    puts '+++> CONVERGE_IF_CHANGED'.colorize(:yellow).bold
     library_helper_method('Inside converge_if_changed.')
     action_class_method('Inside converge_if_changed.')
-    print '       new_resource.desired_true: '.colorize(:light_cyan).bold
-    puts new_resource.desired_true.to_s.colorize(:light_cyan)
+    print '       new_resource.desired_true: '.colorize(:light_cyan)
+    puts new_resource.desired_true.to_s.colorize(:light_cyan).italic
 
-    print '       new_resource.desired_false: '.colorize(:light_cyan).bold
-    puts new_resource.desired_false.to_s.colorize(:light_cyan)
-    puts '---> CONVERGE_IF_CHANGED [END]'.colorize(:yellow).bold
-    puts "\n"
+    print '       new_resource.desired_false: '.colorize(:light_cyan)
+    puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
+    puts '---> CONVERGE_IF_CHANGED'.colorize(:yellow).bold
   end
+
+  puts "\n"
 
   execute 'echo "execute resource inside an action"' do
     library_helper_method('Inside a resource -> inside an action.')
@@ -108,7 +112,7 @@ action :set do
   #   only_if { entry_missing? }
   # end
 
-  puts '---> ACTION [END]'.colorize(:red).bold
+  puts '---> ACTION'.colorize(:red).bold
 end
 
 # action :delete do

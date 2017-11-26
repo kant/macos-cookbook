@@ -2,11 +2,11 @@ require 'colorize'
 
 module MacOS
   module PlistBuddyHelpers
-    puts '---> HELPERS MODULE [BEGIN]'.colorize(:magenta)
+    puts '+++> HELPERS MODULE'.colorize(:magenta).bold
     def library_helper_method(message)
-      puts '       + library_helper_method BEGIN'.colorize(:light_magenta).italic
-      puts "           #{message}".colorize(:light_magenta).bold
-      puts '       + library_helper_method END'.colorize(:light_magenta).italic
+      puts '     + library_helper_method'.colorize(:light_magenta)
+      puts "         #{message}".colorize(:light_magenta).italic
+      puts '     - library_helper_method'.colorize(:light_magenta)
     end
 
     def convert_to_string_from_data_type(value)
@@ -36,7 +36,7 @@ module MacOS
 
     def instance_method_finder(class_name)
       class_instance_methods = class_name.instance_methods - class_name.superclass.instance_methods
-      puts "   * #{class_name}".colorize(:green).bold
+      puts "   * #{class_name}:".colorize(:green).bold
       class_instance_methods.sort.each do |method|
         puts "       #{method}".colorize(:green)
       end
@@ -44,7 +44,7 @@ module MacOS
 
     def instance_variable_finder(class_name)
       class_instance_variables = class_name.instance_variables - class_name.superclass.instance_variables
-      puts "   * #{class_name}".colorize(:red).bold
+      puts "   * #{class_name}:".colorize(:red).bold
       class_instance_variables.sort.each do |variable|
         puts "       #{variable}".colorize(:red)
       end
@@ -59,7 +59,7 @@ module MacOS
         plist_value
       end
     end
-    puts '---> HELPERS MODULE [END]'.colorize(:magenta)
+    puts '---> HELPERS MODULE'.colorize(:magenta).bold
   end
 end
 
