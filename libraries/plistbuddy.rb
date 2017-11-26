@@ -4,9 +4,9 @@ module MacOS
   module PlistBuddyHelpers
     puts '---> HELPERS MODULE [GO]'.colorize(:magenta).bold
     def library_helper_method(message)
-      puts '     + library_helper_method'.colorize(:light_magenta)
+      puts '     + library_helper_method'.colorize(:light_magenta).bold
       puts "         #{message}".colorize(:light_magenta).italic
-      puts '     - library_helper_method'.colorize(:light_magenta)
+      puts '     - library_helper_method'.colorize(:light_magenta).bold
     end
 
     def convert_to_string_from_data_type(value)

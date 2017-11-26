@@ -36,7 +36,7 @@ action_class do
     # instance_method_finder(new_resource.class)
     # instance_variable_finder(new_resource.class)
 
-    puts '   - action_class_method'.colorize(:cyan).italic
+    puts '   - action_class_method'.colorize(:cyan).bold
   end
 
   # instance_method_finder(provider)
