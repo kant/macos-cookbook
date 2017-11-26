@@ -32,15 +32,11 @@ action_class do |provider|
     puts ' -> action_class_method END'.colorize(:cyan).italic
   end
 
-  puts "provider.name: #{provider.name}"
-  puts "provider.resource_class: #{provider.resource_class}"
-  puts "provider.inspect: #{provider.inspect}"
-  puts "provider.display: #{provider.display}"
-  puts "provider.itself: #{provider.itself}"
+  provider_methods = provider.instance_methods.sort - provider.superclass.instance_methods
+  puts "+++ provider methods: #{provider_methods}".colorize(:green)
 
-  puts provider.public_methods
-  puts provider.public_methods.include?(:dup)
-  puts provider.methods.include?(:dup)
+  new_resource_methods = new_resource.instance_methods.sort - new_resource.superclass.instance_methods
+  puts "+++ new_resource methods: #{new_resource_methods}".colorize(:green)
 
   # def plistbuddy(action)
   #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
@@ -66,6 +62,10 @@ end
 load_current_value do |desired|
   print "\n"
   puts '    load_current_value BEGIN'.colorize(:light_blue)
+
+  desired_methods = desired.instance_methods.sort - desired.superclass.instance_methods
+  puts "desired methods: #{desired_methods}".colorize(:green)
+
   library_helper_method('Outside a method body inside load_current_value.')
 
   print '        desired_true: '.colorize(:light_cyan).bold
