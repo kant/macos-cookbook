@@ -14,16 +14,18 @@ property :is_binary, [TrueClass, FalseClass]
 default_action :set
 
 action_class do
-  puts '---> begin action_class'.colorize(:light_blue).bold
+  puts '>>>> action_class BEGIN <<<<'.colorize(:blue).bold
   extend MacOS::PlistBuddyHelpers
   library_helper_method
-
   def action_class_method
     print "\n"
-    puts "---> inside \"action_class_method\"".colorize(mode: :italic)
-    puts "     new_resource.desired_true: ".colorize(mode: :italic)
-    puts "     new_resource.desired_false: ".colorize(mode: :italic)
-    puts new_resource.desired_true.to_s.colorize(:green).bold
+    puts '---> action_class_method BEGIN <---'.colorize(:cyan).italic
+    print '     new_resource.desired_true: '.colorize(:light_cyan)
+    puts new_resource.desired_true.to_s.colorize(:light_cyan).bold
+
+    print '     new_resource.desired_false: '.colorize(:light_cyan)
+    puts new_resource.desired_false.to_s.colorize(:light_cyan).bold
+    puts '---> action_class_method END <---'.colorize(:cyan).italic
   end
 
   def plistbuddy(action)
@@ -33,21 +35,20 @@ action_class do
   def entry_missing?
     return true if shell_out(plistbuddy(:print)).error?
   end
-  puts '---> end action_class'.colorize(:light_blue).bold
+  puts '>>>> action_class END <<<<'.colorize(:blue).bold
 end
 
 load_current_value do
   print "\n"
-  puts "---> begin load_current_value".colorize(:red).bold
-  # action_class_method
+  puts '===> load_current_value BEGIN <==='.colorize(:light_blue).bold
   library_helper_method
-  puts "---> end load_current_value".colorize(:red).bold
+  puts '===> load_current_value END <==='.colorize(:light_blue).bold
   print "\n"
 end
 
 action :set do
-  puts ">>> begin action :set".colorize(:light_magenta).bold
-  puts "---> current_value: #{current_value}".colorize(:cyan).bold
+  puts '>>>> action :set BEGIN <<<<'.colorize(:red).bold
+  puts "     current_value: #{current_value}".colorize(:red)
 
   library_helper_method
   action_class_method
@@ -62,7 +63,7 @@ action :set do
     command plistbuddy :add
     only_if { entry_missing? }
   end
-  puts ">>> end action :set".colorize(:light_magenta).bold
+  puts '>>>> action :set END <<<<'.colorize(:red).bold
 end
 
 action :delete do

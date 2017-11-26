@@ -2,9 +2,11 @@ require 'colorize'
 
 module MacOS
   module PlistBuddyHelpers
-    puts '---> begin PlistBuddyHelpers'.colorize(:magenta).italic
+    puts '---> Helpers BEGIN <---'.colorize(:magenta)
     def library_helper_method
-      puts "---> inside \"library_helper_method\"".colorize(mode: :italic)
+      puts '---> library_helper_method BEGIN <---'.colorize(:light_magenta)
+      puts 'do stuff here'
+      puts '---> library_helper_method END <---'.colorize(:light_magenta)
     end
 
     def convert_to_string_from_data_type(value)
@@ -41,7 +43,7 @@ module MacOS
         plist_value
       end
     end
-    puts '---> end PlistBuddyHelpers'.colorize(:magenta).italic
+    puts '---> Helpers END <---'.colorize(:magenta)
   end
 end
 
