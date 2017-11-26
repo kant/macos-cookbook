@@ -5,7 +5,7 @@ plistbuddy 'show hidden files' do
   path '/Users/vagrant/Library/Preferences/com.apple.finder.plist'
   entry 'AppleShowAllFiles'
   value true
-  set_by_system 'determined by the state of the system.'
+  get_from_system 'determined by the state of the system.'
   set_by_resource 'determined by the resource'
 end
 

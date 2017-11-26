@@ -6,7 +6,7 @@ property :path, String, desired_state: false
 property :entry, String, desired_state: false
 property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float], desired_state: true
 
-property :set_by_system, String, desired_state: true
+property :get_from_system, String, desired_state: true
 property :set_by_resource, String, desired_state: false
 
 property :is_binary, [TrueClass, FalseClass]
@@ -24,8 +24,8 @@ action_class do
     puts '   + action_class_method'.colorize(:cyan).bold
     puts "     #{message}".colorize(:cyan).italic
 
-    print '       new_resource.set_by_system: '.colorize(:light_cyan)
-    puts new_resource.set_by_system.to_s.colorize(:light_cyan).italic
+    print '       new_resource.get_from_system: '.colorize(:light_cyan)
+    puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
 
     print '       new_resource.set_by_resource: '.colorize(:light_cyan)
     puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
@@ -56,16 +56,14 @@ load_current_value do |desired|
   library_helper_method('Outside a method body inside load_current_value.')
   # instance_method_finder(desired.class)
   # instance_variable_finder(desired.class)
+  get_from_system 'setting this value via a system call'
 
-  print '       set_by_system: '.colorize(:light_cyan).bold
-  puts set_by_system.to_s.colorize(:light_cyan)
+  print '       get_from_system: '.colorize(:light_cyan).bold
+  puts get_from_system.to_s.colorize(:light_cyan)
   print '       set_by_resource: '.colorize(:light_cyan).bold
   puts set_by_resource.to_s.colorize(:light_cyan)
-
-  set_by_system 'setting this value via a system call'
-
-  print '       desired.set_by_system: '.colorize(:light_cyan).bold
-  puts desired.set_by_system.to_s.colorize(:light_cyan)
+  print '       desired.get_from_system: '.colorize(:light_cyan).bold
+  puts desired.get_from_system.to_s.colorize(:light_cyan)
   print '       desired.set_by_resource: '.colorize(:light_cyan).bold
   puts desired.set_by_resource.to_s.colorize(:light_cyan)
   puts '---> LOAD_CURRENT_VALUE [STOP]'.colorize(:light_blue).bold
@@ -75,18 +73,18 @@ action :set do
   puts '---> ACTION [GO]'.colorize(:red).bold
   library_helper_method('Inside an action.')
   action_class_method('Inside an action.')
-  print "---> CURRENT_VALUE: #{current_value}".colorize(:green).bold
-  print '       new_resource.set_by_system: '.colorize(:light_cyan)
-  puts new_resource.set_by_system.to_s.colorize(:light_cyan).italic
+  print "---> CURRENT_VALUE: #{current_value}\n\n".colorize(:green).bold
+  print '       new_resource.get_from_system: '.colorize(:light_cyan)
+  puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
   print '       new_resource.set_by_resource: '.colorize(:light_cyan)
   puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
 
-  converge_if_changed do
+  converge_if_changed :get_from_system do
     puts '--> CONVERGE_IF_CHANGED [GO]'.colorize(:yellow).bold
     library_helper_method('Inside converge_if_changed.')
     action_class_method('Inside converge_if_changed.')
-    print '       new_resource.set_by_system: '.colorize(:light_cyan)
-    puts new_resource.set_by_system.to_s.colorize(:light_cyan).italic
+    print '       new_resource.get_from_system: '.colorize(:light_cyan)
+    puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
 
     print '       new_resource.set_by_resource: '.colorize(:light_cyan)
     puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
