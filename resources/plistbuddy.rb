@@ -15,11 +15,11 @@ default_action :set
 
 action_class do
   puts '---> ACTION_CLASS [GO]'.colorize(:blue).bold
-  
+
   extend MacOS::PlistBuddyHelpers
-  
+
   library_helper_method('(1) Outside a method body in action_class.')
-  
+
   def action_class_method(message)
     puts '   + action_class_method'.colorize(:cyan).bold
     puts "     #{message}".colorize(:cyan).italic
@@ -30,7 +30,7 @@ action_class do
     library_helper_method('(6) Inside a method body in action_class.')
     puts '   - action_class_method'.colorize(:cyan).bold
   end
-  
+
   puts '---> ACTION_CLASS [STOP]'.colorize(:blue).bold
 end
 
@@ -53,7 +53,7 @@ end
 
 action :set do
   puts '---> ACTION [GO]'.colorize(:red).bold
-  
+
   action_class_method('(1) Inside an action.')
   library_helper_method('(5) Inside an action.')
 
@@ -65,10 +65,10 @@ action :set do
 
   converge_if_changed :get_from_system do
     puts '--> CONVERGE_IF_CHANGED [GO]'.colorize(:yellow).bold
-    
+
     action_class_method('(2) Inside converge_if_changed.')
     library_helper_method('(7) Inside converge_if_changed.')
-    
+
     print '       new_resource.get_from_system [converge_if_changed]: '.colorize(:light_cyan)
     puts new_resource.get_from_system.to_s.colorize(:light_cyan).italic
     print '       new_resource.set_by_resource [converge_if_changed]: '.colorize(:light_cyan)
