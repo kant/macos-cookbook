@@ -5,8 +5,8 @@ plistbuddy 'show hidden files' do
   path '/Users/vagrant/Library/Preferences/com.apple.finder.plist'
   entry 'AppleShowAllFiles'
   value true
-  desired_true 'determined by the state of the system.'
-  desired_false 'determined by the properties defined by the recipe or resource (default values)'
+  set_by_system 'determined by the state of the system.'
+  set_by_resource 'determined by the resource'
 end
 
 # plistbuddy 'put the Dock on the left side' do

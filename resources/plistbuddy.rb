@@ -6,15 +6,14 @@ property :path, String, desired_state: false
 property :entry, String, desired_state: false
 property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float], desired_state: true
 
-property :desired_true, String, desired_state: true
-property :desired_false, String, desired_state: false
+property :set_by_system, String, desired_state: true
+property :set_by_resource, String, desired_state: false
 
 property :is_binary, [TrueClass, FalseClass]
 
 default_action :set
 
 action_class do
-  print "\n"
   puts '---> ACTION_CLASS [GO]'.colorize(:blue).bold
 
   extend MacOS::PlistBuddyHelpers
@@ -22,15 +21,14 @@ action_class do
   library_helper_method('Outside a method body in action_class.')
 
   def action_class_method(message)
-    print "\n"
     puts '   + action_class_method'.colorize(:cyan).bold
     puts "     #{message}".colorize(:cyan).italic
 
-    print '       new_resource.desired_true: '.colorize(:light_cyan)
-    puts new_resource.desired_true.to_s.colorize(:light_cyan).italic
+    print '       new_resource.set_by_system: '.colorize(:light_cyan)
+    puts new_resource.set_by_system.to_s.colorize(:light_cyan).italic
 
-    print '       new_resource.desired_false: '.colorize(:light_cyan)
-    puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
+    print '       new_resource.set_by_resource: '.colorize(:light_cyan)
+    puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
 
     library_helper_method('Inside a method body in action_class.')
     # instance_method_finder(new_resource.class)
@@ -53,48 +51,45 @@ action_class do
 end
 
 load_current_value do |desired|
+  puts "\n"
   puts '---> LOAD_CURRENT_VALUE [GO]'.colorize(:light_blue).bold
-
+  library_helper_method('Outside a method body inside load_current_value.')
   # instance_method_finder(desired.class)
   # instance_variable_finder(desired.class)
 
-  library_helper_method('Outside a method body inside load_current_value.')
+  print '       set_by_system: '.colorize(:light_cyan).bold
+  puts set_by_system.to_s.colorize(:light_cyan)
+  print '       set_by_resource: '.colorize(:light_cyan).bold
+  puts set_by_resource.to_s.colorize(:light_cyan)
 
-  print '       desired_true: '.colorize(:light_cyan).bold
-  puts desired_true.to_s.colorize(:light_cyan)
-  print '       desired_false: '.colorize(:light_cyan).bold
-  puts desired_false.to_s.colorize(:light_cyan)
+  set_by_system 'setting this value via a system call'
 
-  print '       desired.desired_true: '.colorize(:light_cyan).bold
-  puts desired.desired_true.to_s.colorize(:light_cyan)
-  print '       desired.desired_false: '.colorize(:light_cyan).bold
-  puts desired.desired_false.to_s.colorize(:light_cyan)
+  print '       desired.set_by_system: '.colorize(:light_cyan).bold
+  puts desired.set_by_system.to_s.colorize(:light_cyan)
+  print '       desired.set_by_resource: '.colorize(:light_cyan).bold
+  puts desired.set_by_resource.to_s.colorize(:light_cyan)
   puts '---> LOAD_CURRENT_VALUE [STOP]'.colorize(:light_blue).bold
 end
 
 action :set do
-  print "\n"
-  puts '--> ACTION [GO]'.colorize(:red).bold
+  puts '---> ACTION [GO]'.colorize(:red).bold
   library_helper_method('Inside an action.')
   action_class_method('Inside an action.')
-  print ' * current_value inside action: '.colorize(:light_blue).bold
-  puts " - #{current_value}".colorize(:light_blue).bold
-
-  print '       new_resource.desired_true: '.colorize(:light_cyan)
-  puts new_resource.desired_true.to_s.colorize(:light_cyan).italic
-
-  print '       new_resource.desired_false: '.colorize(:light_cyan)
-  puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
+  print "---> CURRENT_VALUE: #{current_value}".colorize(:green).bold
+  print '       new_resource.set_by_system: '.colorize(:light_cyan)
+  puts new_resource.set_by_system.to_s.colorize(:light_cyan).italic
+  print '       new_resource.set_by_resource: '.colorize(:light_cyan)
+  puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
 
   converge_if_changed do
     puts '--> CONVERGE_IF_CHANGED [GO]'.colorize(:yellow).bold
     library_helper_method('Inside converge_if_changed.')
     action_class_method('Inside converge_if_changed.')
-    print '       new_resource.desired_true: '.colorize(:light_cyan)
-    puts new_resource.desired_true.to_s.colorize(:light_cyan).italic
+    print '       new_resource.set_by_system: '.colorize(:light_cyan)
+    puts new_resource.set_by_system.to_s.colorize(:light_cyan).italic
 
-    print '       new_resource.desired_false: '.colorize(:light_cyan)
-    puts new_resource.desired_false.to_s.colorize(:light_cyan).italic
+    print '       new_resource.set_by_resource: '.colorize(:light_cyan)
+    puts new_resource.set_by_resource.to_s.colorize(:light_cyan).italic
     puts '---> CONVERGE_IF_CHANGED [STOP]'.colorize(:yellow).bold
   end
 
