@@ -1,7 +1,12 @@
+require 'colorize'
+
 module MacOS
   module PlistBuddyHelpers
-    puts "\n"
-    puts "\t\t>> begin PlistBuddyHelpers"
+    puts '---> begin PlistBuddyHelpers'.colorize(:magenta).italic
+    def library_helper_method
+      puts "---> inside \"library_helper_method\"".colorize(mode: :italic)
+    end
+
     def convert_to_string_from_data_type(value)
       data_type_cases = { Array => "array #{value}",
                           Integer => "integer #{value}",
@@ -36,8 +41,7 @@ module MacOS
         plist_value
       end
     end
-    puts "\t\t>> end PlistBuddyHelpers"
-    puts "\n"
+    puts '---> end PlistBuddyHelpers'.colorize(:magenta).italic
   end
 end
 
