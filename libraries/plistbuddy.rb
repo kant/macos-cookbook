@@ -1,14 +1,5 @@
-require 'colorize'
-
 module MacOS
   module PlistBuddyHelpers
-    puts '---> HELPERS MODULE [GO]'.colorize(:magenta).bold
-    def library_helper_method(message)
-      puts '     + library_helper_method'.colorize(:light_magenta).bold
-      puts "         #{message}".colorize(:light_magenta).italic
-      puts '     - library_helper_method'.colorize(:light_magenta).bold
-    end
-
     def convert_to_string_from_data_type(value)
       data_type_cases = { Array => "array #{value}",
                           Integer => "integer #{value}",
@@ -20,34 +11,10 @@ module MacOS
       data_type_cases[value.class]
     end
 
-    def needs_conversion?(path)
-      return true if shell_out('/usr/bin/file', '--brief', '--mime', path).stdout =~ /binary/i
-    end
-
-    def convert_to_binary(path)
-      shell_out('/usr/bin/plutil', '-convert', 'binary1', path)
-    end
-
     def format_plistbuddy_command(action_property, plist_entry, plist_value = nil)
       plist_entry = "\"#{plist_entry}\"" if plist_entry.include?(' ')
       plist_value = args_formatter(action_property, plist_value)
       "/usr/libexec/PlistBuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
-    end
-
-    def instance_method_finder(class_name)
-      class_instance_methods = class_name.instance_methods - class_name.superclass.instance_methods
-      puts "   * #{class_name}:".colorize(:green).bold
-      class_instance_methods.sort.each do |method|
-        puts "       #{method}".colorize(:green)
-      end
-    end
-
-    def instance_variable_finder(class_name)
-      class_instance_variables = class_name.instance_variables - class_name.superclass.instance_variables
-      puts "   * #{class_name}:".colorize(:red).bold
-      class_instance_variables.sort.each do |variable|
-        puts "       #{variable}".colorize(:red)
-      end
     end
 
     private
@@ -59,7 +26,6 @@ module MacOS
         plist_value
       end
     end
-    puts '---> HELPERS MODULE [STOP]'.colorize(:magenta).bold
   end
 end
 
