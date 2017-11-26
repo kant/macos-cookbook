@@ -4,10 +4,9 @@ module MacOS
   module PlistBuddyHelpers
     puts '---> Helpers BEGIN <---'.colorize(:magenta)
     def library_helper_method(message)
-      print "\n"
-      puts '    library_helper_method BEGIN'.colorize(:light_magenta).italic
-      puts "        #{message}".colorize(:light_magenta).bold
-      puts '    library_helper_method END'.colorize(:light_magenta).italic
+      puts '        library_helper_method BEGIN'.colorize(:light_magenta).italic
+      puts "          #{message}".colorize(:light_magenta).bold
+      puts '        library_helper_method END'.colorize(:light_magenta).italic
     end
 
     def convert_to_string_from_data_type(value)

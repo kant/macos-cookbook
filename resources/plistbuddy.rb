@@ -19,42 +19,64 @@ action_class do
   extend MacOS::PlistBuddyHelpers
   library_helper_method('Outside a method body in action_class.')
 
-  def action_class_method
+  def action_class_method(message)
     print "\n"
-    puts '    action_class_method BEGIN'.colorize(:cyan).italic
-    print '        new_resource.desired_true: '.colorize(:light_cyan)
-    puts new_resource.desired_true.to_s.colorize(:light_cyan).bold
+    puts ' -> action_class_method BEGIN'.colorize(:cyan).italic
+    puts "      #{message}".colorize(:cyan)
+    print '        new_resource.desired_true: '.colorize(:light_cyan).bold
+    puts new_resource.desired_true.to_s.colorize(:light_cyan)
 
-    print '        new_resource.desired_false: '.colorize(:light_cyan)
-    puts new_resource.desired_false.to_s.colorize(:light_cyan).bold
+    print '        new_resource.desired_false: '.colorize(:light_cyan).bold
+    puts new_resource.desired_false.to_s.colorize(:light_cyan)
     library_helper_method('Inside a method body in action_class')
-    puts '    action_class_method END'.colorize(:cyan).italic
+    puts ' -> action_class_method END'.colorize(:cyan).italic
   end
 
-  def plistbuddy(action)
-    [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-  end
+  # def plistbuddy(action)
+  #   [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
+  # end
 
-  def entry_missing?
-    return true if shell_out(plistbuddy(:print)).error?
-  end
+  # def entry_missing?
+  #   return true if shell_out(plistbuddy(:print)).error?
+  # end
   puts '>>> action_class END <<<'.colorize(:blue).bold
 end
 
-load_current_value do
+# load_current_value do
+#   print "\n"
+#   puts '    load_current_value BEGIN'.colorize(:light_blue)
+#   library_helper_method('Outside a method body inside load_current_value.')
+#   print '        desired_true: '.colorize(:light_cyan).bold
+#   puts desired_true.to_s.colorize(:light_cyan)
+#   print '        desired_false: '.colorize(:light_cyan).bold
+#   puts desired_false.to_s.colorize(:light_cyan)
+#   puts '    load_current_value END'.colorize(:light_blue)
+# end
+
+load_current_value do |desired|
   print "\n"
-  puts '==> load_current_value BEGIN'.colorize(:light_blue).bold
-  library_helper_method('Inside load_current_value')
-  puts '==> load_current_value END'.colorize(:light_blue).bold
+  puts '    load_current_value BEGIN'.colorize(:light_blue)
+  library_helper_method('Outside a method body inside load_current_value.')
+
+  print '        desired_true: '.colorize(:light_cyan).bold
+  puts desired_true.to_s.colorize(:light_cyan)
+  print '        desired_false: '.colorize(:light_cyan).bold
+  puts desired_false.to_s.colorize(:light_cyan)
+
+  print '        desired.desired_true: '.colorize(:light_cyan).bold
+  puts desired.desired_true.to_s.colorize(:light_cyan)
+  print '        desired.desired_false: '.colorize(:light_cyan).bold
+  puts desired.desired_false.to_s.colorize(:light_cyan)
+  puts '    load_current_value END'.colorize(:light_blue)
 end
 
 action :set do
   print "\n"
-  puts '>>> action :set BEGIN <<<'.colorize(:red).bold
-  puts "    current_value: #{current_value}".colorize(:red)
-
-  library_helper_method('Inside an action')
-  action_class_method
+  puts '>>> :set action BEGIN <<<'.colorize(:red).bold
+  library_helper_method('Inside of an action.')
+  action_class_method('Inside of an action.')
+  print ' -> current_value inside action: '.colorize(:light_blue).bold
+  puts " -> #{current_value}".colorize(:light_blue).bold
 
   # converge_if_changed :value do
   #   puts "\t\t> converge_if_changed"
@@ -62,16 +84,23 @@ action :set do
   #   execute [format_plistbuddy_command(:set, new_resource.entry, new_resource.value), new_resource.path].join(' ')
   # end
 
-  execute "add #{new_resource.entry} to #{new_resource.path.split('/').last}" do
-    command plistbuddy :add
-    only_if { entry_missing? }
+  execute 'echo "this is inside of an action"' do
+    library_helper_method('Inside an execute resource, inside an action.')
+    action_class_method('Inside an execute resource, inside an action.')
+    live_stream true
   end
-  puts '>>> action :set END <<<'.colorize(:red).bold
+
+  # execute "add #{new_resource.entry} to #{new_resource.path.split('/').last}" do
+  #   command plistbuddy :add
+  #   only_if { entry_missing? }
+  # end
+
+  puts '>>> :set action END <<<'.colorize(:red).bold
 end
 
-action :delete do
-  execute "delete #{new_resource.entry} from plist" do
-    command plistbuddy :delete
-    not_if { entry_missing? }
-  end
-end
+# action :delete do
+#   execute "delete #{new_resource.entry} from plist" do
+#     command plistbuddy :delete
+#     not_if { entry_missing? }
+#   end
+# end
