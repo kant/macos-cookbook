@@ -14,18 +14,18 @@ property :is_binary, [TrueClass, FalseClass]
 default_action :set
 
 action_class do
-  puts '>>>> action_class BEGIN <<<<'.colorize(:blue).bold
+  puts '>>> action_class BEGIN <<<'.colorize(:blue).bold
   extend MacOS::PlistBuddyHelpers
   library_helper_method
   def action_class_method
     print "\n"
-    puts '---> action_class_method BEGIN <---'.colorize(:cyan).italic
-    print '     new_resource.desired_true: '.colorize(:light_cyan)
+    puts '    action_class_method BEGIN'.colorize(:cyan).italic
+    print '        new_resource.desired_true: '.colorize(:light_cyan)
     puts new_resource.desired_true.to_s.colorize(:light_cyan).bold
 
-    print '     new_resource.desired_false: '.colorize(:light_cyan)
+    print '        new_resource.desired_false: '.colorize(:light_cyan)
     puts new_resource.desired_false.to_s.colorize(:light_cyan).bold
-    puts '---> action_class_method END <---'.colorize(:cyan).italic
+    puts '    action_class_method END'.colorize(:cyan).italic
   end
 
   def plistbuddy(action)
@@ -40,15 +40,15 @@ end
 
 load_current_value do
   print "\n"
-  puts '===> load_current_value BEGIN <==='.colorize(:light_blue).bold
+  puts '==> load_current_value BEGIN'.colorize(:light_blue).bold
   library_helper_method
-  puts '===> load_current_value END <==='.colorize(:light_blue).bold
+  puts '==> load_current_value END'.colorize(:light_blue).bold
   print "\n"
 end
 
 action :set do
-  puts '>>>> action :set BEGIN <<<<'.colorize(:red).bold
-  puts "     current_value: #{current_value}".colorize(:red)
+  puts '>>> action :set BEGIN <<<'.colorize(:red).bold
+  puts "    current_value: #{current_value}".colorize(:red)
 
   library_helper_method
   action_class_method
@@ -63,7 +63,7 @@ action :set do
     command plistbuddy :add
     only_if { entry_missing? }
   end
-  puts '>>>> action :set END <<<<'.colorize(:red).bold
+  puts '>>> action :set END <<<'.colorize(:red).bold
 end
 
 action :delete do
