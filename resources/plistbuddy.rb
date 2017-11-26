@@ -14,9 +14,10 @@ property :is_binary, [TrueClass, FalseClass]
 default_action :set
 
 action_class do
+  print "\n"
   puts '>>> action_class BEGIN <<<'.colorize(:blue).bold
   extend MacOS::PlistBuddyHelpers
-  library_helper_method('Outside a method body.')
+  library_helper_method('Outside a method body in action_class.')
 
   def action_class_method
     print "\n"
@@ -26,7 +27,7 @@ action_class do
 
     print '        new_resource.desired_false: '.colorize(:light_cyan)
     puts new_resource.desired_false.to_s.colorize(:light_cyan).bold
-    library_helper_method('Inside a method body.')
+    library_helper_method('Inside a method body in action_class')
     puts '    action_class_method END'.colorize(:cyan).italic
   end
 
@@ -37,7 +38,7 @@ action_class do
   def entry_missing?
     return true if shell_out(plistbuddy(:print)).error?
   end
-  puts '>>>> action_class END <<<<'.colorize(:blue).bold
+  puts '>>> action_class END <<<'.colorize(:blue).bold
 end
 
 load_current_value do
@@ -45,10 +46,10 @@ load_current_value do
   puts '==> load_current_value BEGIN'.colorize(:light_blue).bold
   library_helper_method('Inside load_current_value')
   puts '==> load_current_value END'.colorize(:light_blue).bold
-  print "\n"
 end
 
 action :set do
+  print "\n"
   puts '>>> action :set BEGIN <<<'.colorize(:red).bold
   puts "    current_value: #{current_value}".colorize(:red)
 
