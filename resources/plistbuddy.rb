@@ -21,19 +21,19 @@ action_class do |provider|
 
   def action_class_method(message)
     print "\n"
-    puts ' -> action_class_method BEGIN'.colorize(:cyan).italic
-    puts "      #{message}".colorize(:cyan)
-    print '        new_resource.desired_true: '.colorize(:light_cyan).bold
+    puts '-> action_class_method BEGIN'.colorize(:cyan).italic
+    puts "     #{message}".colorize(:cyan)
+    print '       new_resource.desired_true: '.colorize(:light_cyan).bold
     puts new_resource.desired_true.to_s.colorize(:light_cyan)
 
-    print '        new_resource.desired_false: '.colorize(:light_cyan).bold
+    print '       new_resource.desired_false: '.colorize(:light_cyan).bold
     puts new_resource.desired_false.to_s.colorize(:light_cyan)
     library_helper_method('Inside a method body in action_class')
 
     instance_method_finder(new_resource.class)
     instance_variable_finder(new_resource.class)
 
-    puts ' -> action_class_method END'.colorize(:cyan).italic
+    puts '-> action_class_method END'.colorize(:cyan).italic
   end
 
   instance_method_finder(provider)
@@ -96,6 +96,7 @@ action :set do
   puts new_resource.desired_false.to_s.colorize(:light_cyan)
 
   converge_if_changed do
+    puts '>>> converge_if_changed BEGIN <<<'.colorize(:yellow).bold
     library_helper_method('Inside of converge_if_changed.')
     action_class_method('Inside of converge_if_changed.')
     print '        new_resource.desired_true: '.colorize(:light_cyan).bold
@@ -103,6 +104,7 @@ action :set do
 
     print '        new_resource.desired_false: '.colorize(:light_cyan).bold
     puts new_resource.desired_false.to_s.colorize(:light_cyan)
+    puts '>>> converge_if_changed END <<<'.colorize(:yellow).bold
   end
 
   execute 'echo "this is inside of an action"' do
