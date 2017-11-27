@@ -2,19 +2,24 @@ require 'colorize'
 
 module MacOS
   module BlanketHelpers
-    def property_printer(property, location, &block)
-      print "#{property} [#{location}]: ".colorize(:light_cyan)
-      puts eval(property.to_s, block.binding).to_s.colorize(:light_cyan).italic
+    def property_printer(label, property, location)
+      print "#{label} from [#{location}]: ".colorize(:light_cyan)
+      puts property.to_s.colorize(:light_cyan).italic
     end
 
     def blanket_helper(message)
       method_identifier('blanket_helper', message)
     end
 
-    def indenter(level, symbol = '  ')
-      symbol ||= symbol + ' '
+    def indenter(level, char = nil)
+      char = if char
+               char + ' '
+             else
+               '  '
+             end
+
       levels = '  ' * level
-      levels + symbol
+      levels + char
     end
 
     def method_identifier(label, message)
