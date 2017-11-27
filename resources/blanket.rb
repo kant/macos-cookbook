@@ -54,7 +54,7 @@ action :unfold do
   blanket_helper('(6) Inside an action.')
 
   print "^^^^ #{current_value} ^^^^".colorize(:green).bold
-  puts "\n"
+  puts "\n\n"
   property_printer('new_resource.is_unfolded', new_resource.is_unfolded, 'action')
   property_printer('new_resource.height', new_resource.height, 'action')
   property_printer('new_resource.width', new_resource.width, 'action')
