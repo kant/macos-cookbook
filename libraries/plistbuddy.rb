@@ -11,20 +11,24 @@ module MacOS
       data_type_cases[value.class]
     end
 
-    def format_plistbuddy_command(action_property, plist_entry, plist_value = nil)
-      plist_entry = "\"#{plist_entry}\"" if plist_entry.include?(' ')
-      plist_value = args_formatter(action_property, plist_value)
-      "/usr/libexec/PlistBuddy -c \'#{action_property.to_s.capitalize} :#{plist_entry} #{plist_value}\'"
+    def convert_to_data_type_from_string(type, value)
+      case type
+      when 'boolean'
+        value.to_i == 1
+      when 'integer'
+        value.to_i
+      when 'float'
+        value.to_f
+      when 'string'
+        value
+      end
     end
 
-    private
-
-    def args_formatter(action_property, plist_value)
-      if action_property == :add
-        convert_to_string_from_data_type plist_value
-      else
-        plist_value
-      end
+    def plistbuddy_command(subcommand_action, plist_entry, plist_path, plist_value = nil)
+      plist_value = convert_to_string_from_data_type plist_value if subcommand_action.to_s == 'add'
+      plist_entry = "\"#{plist_entry}\"" if plist_entry.include?(' ')
+      full_subcommand = "#{subcommand_action.capitalize} :#{plist_entry} #{plist_value}"
+      ['/usr/libexec/PlistBuddy', '-c', "\'#{full_subcommand}\'", plist_path].join(' ')
     end
   end
 end

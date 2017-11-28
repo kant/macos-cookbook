@@ -1,59 +1,38 @@
 resource_name :plistbuddy
 
-property :path, String, name_property: true
-property :entry, String, required: true
-property :value, [Hash, String, Array, TrueClass, FalseClass, Integer, Float]
-
-property :is_binary, [TrueClass, FalseClass]
+property :binary, [TrueClass, FalseClass], default: true, desired_state: true
+property :entry, String, required: true, desired_state: false
+property :path, String, name_property: true, desired_state: false
+property :value, [String, TrueClass, FalseClass, Integer, Float, nil], desired_state: true
 
 default_action :set
 
-action_class do
-  extend MacOS::PlistBuddyHelpers
-
-  def plistbuddy(action)
-    [format_plistbuddy_command(action, new_resource.entry, new_resource.value), new_resource.path].join(' ')
-  end
-
-  def entry_missing?
-    return true if shell_out(plistbuddy(:print)).error?
-  end
-
-  def needs_conversion?
-    return true if shell_out('/usr/bin/file', '--brief', '--mime', new_resource.path).stdout =~ /binary/i
-  end
-end
-
 load_current_value do |desired|
-  full_command = [format_plistbuddy_command(:print, desired.entry), desired.path].join(' ')
-  value desired.value if shell_out(full_command).stdout.chomp != desired.value
-  entry desired.entry
+  value_from_system = shell_out('/usr/bin/defaults', 'read', desired.path, desired.entry).stdout.strip
+  current_value_does_not_exist! if value_from_system.nil?
+  entry_type_from_system = shell_out('/usr/bin/defaults', 'read-type', desired.path, desired.entry).stdout.split.last
+  value convert_to_data_type_from_string(entry_type_from_system, value_from_system)
+  binary true if shell_out('/usr/bin/file', '--brief', '--mime', desired.path).stdout =~ /binary/i
 end
 
 action :set do
-  converge_if_changed do
-    plistbuddy :set
+  converge_if_changed :value do
+    converge_by "add \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
+      execute plistbuddy_command :add, new_resource.entry, new_resource.path, new_resource.value do
+        not_if plistbuddy_command :print, new_resource.entry, new_resource.path
+      end
+    end
+
+    converge_by "set \"#{new_resource.entry}\" to #{new_resource.value} at #{new_resource.path.split('/').last}" do
+      execute plistbuddy_command :set, new_resource.entry, new_resource.path, new_resource.value
+    end
   end
 
-  execute "add #{new_resource.entry} to #{new_resource.path}" do
-    command plistbuddy :add
-    only_if { entry_missing? }
-  end
-
-  execute 'convert back to binary' do
-    command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-    not_if { needs_conversion? }
-  end
-end
-
-action :delete do
-  execute "delete #{new_resource.entry} from plist" do
-    command plistbuddy :delete
-    not_if { entry_missing? }
-  end
-
-  execute 'convert back to binary' do
-    command "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-    not_if { needs_conversion? }
+  unless new_resource.binary == false
+    converge_if_changed :binary do
+      converge_by "convert \"#{new_resource.path.split('/').last}\" to binary plist" do
+        execute "/usr/bin/plutil -convert binary1 #{new_resource.path}"
+      end
+    end
   end
 end
