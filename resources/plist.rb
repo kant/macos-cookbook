@@ -1,38 +1,35 @@
 resource_name :plist
 
-property :binary, [TrueClass, FalseClass], default: true, desired_state: true
-property :entry, String, required: true, desired_state: false
-property :path, String, name_property: true, desired_state: false
-property :value, [String, TrueClass, FalseClass, Integer, Float, nil], desired_state: true
+property :path, String, name_property: true
 
-default_action :set
+property :type, String, equal_to: ['binary', 'us-ascii'], default: 'binary', desired_state: false
+property :entry, String, desired_state: true
+property :value, [String, TrueClass, FalseClass, Integer, Float, nil], desired_state: true
 
 load_current_value do |desired|
   value_from_system = shell_out('/usr/bin/defaults', 'read', desired.path, desired.entry).stdout.strip
-  current_value_does_not_exist! if value_from_system.nil?
   entry_type_from_system = shell_out('/usr/bin/defaults', 'read-type', desired.path, desired.entry).stdout.split.last
+
+  entry '' if value_from_system.nil?
   value convert_to_data_type_from_string(entry_type_from_system, value_from_system)
-  binary true if shell_out('/usr/bin/file', '--brief', '--mime', desired.path).stdout =~ /binary/i
+  #  type shell_out('/usr/bin/file', '--brief', '--mime-encoding', desired.path).stdout.strip
 end
 
 action :set do
-  converge_if_changed :value do
-    converge_by "add \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
-      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value) do
-        not_if plistbuddy_command(:print, new_resource.entry, new_resource.path)
-      end
+  converge_if_changed :entry do
+    converge_by "add \"#{new_resource.entry}\" to #{new_resource.value} at #{new_resource.path.split('/').last}" do
+      execute plistbuddy_command(:add, new_resource.entry, new_resource.path, new_resource.value)
     end
+  end
 
-    converge_by "set \"#{new_resource.entry}\" to #{new_resource.value} at #{new_resource.path.split('/').last}" do
+  converge_if_changed :value do
+    converge_by "set \"#{new_resource.entry}\" to #{new_resource.path.split('/').last}" do
       execute plistbuddy_command(:set, new_resource.entry, new_resource.path, new_resource.value)
     end
   end
 
-  unless new_resource.binary
-    converge_if_changed :binary do
-      converge_by "convert \"#{new_resource.path.split('/').last}\" to binary plist" do
-        execute "/usr/bin/plutil -convert binary1 #{new_resource.path}"
-      end
-    end
+  execute 'convert to binary plist' do
+    command "/usr/bin/plutil -convert #{new_resource.type}1 #{new_resource.path}"
+    not_if { shell_out('/usr/bin/file', '--brief', '--mime-encoding', new_resource.path).stdout.strip == new_resource.type }
   end
 end
