@@ -11,7 +11,7 @@ control 'xcode' do
     it { should be_directory }
   end
 
-  describe command('/usr/bin/defaults read /Applications/Xcode.app/Contents/version.plist CFBundleShortVersionIdentifier') do
+  describe command('/usr/bin/defaults read /Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString') do
     it { should match '9.0.1' }
   end
 

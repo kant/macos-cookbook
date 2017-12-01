@@ -24,12 +24,12 @@ action :install do
       options('--no-document')
     end
 
-    execute 'update available Xcode versions' do
+    execute 'Update cached list of available Xcode versions' do
       environment developer_credentials
-      command [xcversion_command, update]
+      command [xcversion_command, 'update']
     end
 
-    execute "install Xcode version #{new_resource.version}" do
+    execute "Install Xcode #{new_resource.version}" do
       environment developer_credentials
       command [xcversion_command, 'install', xcversion_version(new_resource.version)]
     end
