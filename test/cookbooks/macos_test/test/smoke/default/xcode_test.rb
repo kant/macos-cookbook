@@ -1,13 +1,18 @@
 control 'xcode' do
-  desc 'application Xcode exists and Developer mode is enabled'
+  desc 'Xcode 9.0.1 exists and Developer mode is enabled'
 
-  describe file('/Applications/Xcode.app'), :skip do
+  describe file('/Applications/Xcode.app') do
     it { should exist }
     it { should be_symlink }
   end
 
-  describe directory('/Applications/Xcode-9.app'), :skip do
+  describe directory('/Applications/Xcode-9.0.1.app') do
     it { should exist }
+    it { should be_directory }
+  end
+
+  describe command('/usr/bin/defaults read /Applications/Xcode.app/Contents/version.plist CFBundleShortVersionIdentifier') do
+    it { should match '9.0.1' }
   end
 
   describe command('/usr/local/bin/xcversion simulators'), :skip do

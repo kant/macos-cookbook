@@ -1,5 +1,5 @@
-module Xcode
-  module Helper
+module MacOS
+  module XcodeHelper
     def xcversion_command
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
@@ -18,11 +18,6 @@ module Xcode
       else
         semantic_version
       end
-    end
-
-    def requested_xcode_not_at_path
-      xcode_version = '/Applications/Xcode.app/Contents/version.plist CFBundleShortVersionString'
-      node['macos']['xcode']['version'] != shell_out('defaults', 'read', xcode_version).stdout.strip
     end
 
     def simulator_already_installed?(semantic_version)
@@ -55,3 +50,6 @@ module Xcode
     end
   end
 end
+
+Chef::Recipe.include(MacOS::XcodeHelper)
+Chef::Resource.include(MacOS::XcodeHelper)
