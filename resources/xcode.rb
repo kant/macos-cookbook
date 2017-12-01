@@ -6,20 +6,10 @@ property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
 
 action_class do
-  def credentials
-    data_bag_item(:credentials, :apple_id)
-  end
-
-  def xcode_install_environment
-    { XCODE_INSTALL_USER:     CREDENTIALS_DATA_BAG['apple_id'],
-      XCODE_INSTALL_PASSWORD: CREDENTIALS_DATA_BAG['password'] }
-  end
-
-  def current_xcode_version
-    version_plist = '/Applications/Xcode.app/Contents/version.plist'
-    short_version_key = 'CFBundleShortVersionString'
-    version_key_value_output = shell_out('/usr/bin/defaults', 'read', version_plist, short_version_key).stdout
-    version_key_value_output.strip
+  def developer_credentials
+    data_bag = data_bag_item(:credentials, :apple_id)
+    { XCODE_INSTALL_USER:     data_bag[:apple_id],
+      XCODE_INSTALL_PASSWORD: data_bag[:password] }
   end
 end
 
@@ -35,13 +25,13 @@ action :install do
     end
 
     execute 'update available Xcode versions' do
-      environment DEVELOPER_CREDENTIALS
-      command "#{xcversion_command} update"
+      environment developer_credentials
+      command [xcversion_command, update]
     end
 
-    execute "install Xcode #{new_resource.version}" do
-      environment DEVELOPER_CREDENTIALS
-      command "#{xcversion_command} install '#{xcversion_version(new_resource.version)}'"
+    execute "install Xcode version #{new_resource.version}" do
+      environment developer_credentials
+      command [xcversion_command, 'install', xcversion_version(new_resource.version)]
     end
   end
 end

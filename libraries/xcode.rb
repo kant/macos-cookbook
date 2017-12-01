@@ -4,6 +4,13 @@ module MacOS
       '/opt/chef/embedded/bin/xcversion'.freeze
     end
 
+    def current_xcode_version
+      version_plist = '/Applications/Xcode.app/Contents/version.plist'
+      short_version_key = 'CFBundleShortVersionString'
+      version_key_value_output = shell_out('/usr/bin/defaults', 'read', version_plist, short_version_key).stdout
+      version_key_value_output.strip
+    end
+
     def requested_xcode_already_installed?(semantic_version = nil)
       version = semantic_version || node['macos']['xcode']['version']
       xcversion_output = shell_out(xcversion_command, 'installed').stdout.split
