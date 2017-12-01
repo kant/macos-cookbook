@@ -1,9 +1,8 @@
 resource_name :xcode
-default_action :install
 
-property :version, String, name_property: true
-property :path, String, default: '/Applications/Xcode.app'
 property :ios_simulators, Array
+property :path, String, default: '/Applications/Xcode.app'
+property :version, String, desired_state: false
 
 action_class do
   def developer_credentials
@@ -14,6 +13,7 @@ action_class do
 end
 
 load_current_value do
+  available_simulator_versions.include?("#{semantic_version} Simulator (installed)")
   current_value_does_not_exist! if current_xcode_version.nil?
   version current_xcode_version
 end
