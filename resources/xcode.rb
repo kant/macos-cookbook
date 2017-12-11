@@ -2,6 +2,7 @@ resource_name :xcode
 
 property :ios_simulators, Array
 property :version, String, desired_state: false
+property :selected, [TrueClass, FalseClass], desired_state: false
 
 action_class do
   def developer_credentials
