@@ -2,6 +2,9 @@
 driver:
   name: vagrant
   provider: parallels
+  customize:
+    memory: 10240
+    cpus: 8
 
 provisioner:
   name: chef_zero
@@ -27,3 +30,10 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/default
+
+  - name: xcode
+    run_list:
+      - recipe[macos_test::xcode]
+    verifier:
+      inspec_tests:
+        - test/smoke/xcode
