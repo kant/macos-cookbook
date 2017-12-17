@@ -8,6 +8,11 @@ property :width, Integer, desired_state: false
 
 default_action :unfold
 
+blanket_helper(action_class.class)
+blanket_helper(action_class.ancestors)
+instance_method_finder(action_class)
+class_method_finder(action_class)
+
 action_class do
   puts '---> ACTION_CLASS [GO]'.colorize(:blue).bold
 
@@ -22,7 +27,7 @@ action_class do
   def action_class_properties
     property_printer('new_resource.is_unfolded', new_resource.is_unfolded, 'action_class_properties')
     property_printer('new_resource.height', new_resource.height, 'action_class_properties')
-    property_printer('new_resource.width',new_resourcedesired.width, 'action_class_properties')
+    property_printer('new_resource.width', new_resourcedesired.width, 'action_class_properties')
     blanket_helper('(6) Inside a method body in action_class.')
   end
 

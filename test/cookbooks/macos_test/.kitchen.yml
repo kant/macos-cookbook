@@ -34,3 +34,7 @@ suites:
     verifier:
       inspec_tests:
         - test/smoke/xcode
+
+  - name: colored
+    run_list:
+      - recipe[macos_test::blankets]
