@@ -1,4 +1,6 @@
 require 'colorize'
+require_relative '../libraries/blanket.rb'
+extend MacOS::BlanketHelpers
 
 resource_name :blanket
 
@@ -11,7 +13,7 @@ default_action :unfold
 blanket_helper(action_class.class)
 blanket_helper(action_class.ancestors)
 instance_method_finder(action_class)
-class_method_finder(action_class)
+instance_variable_finder(action_class)
 
 action_class do
   puts '---> ACTION_CLASS [GO]'.colorize(:blue).bold
