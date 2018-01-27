@@ -39,7 +39,7 @@ This resource has the following actions:
 
 <dl>
   <dd><b>Ruby Type: </b><code>String</code></dd>
-  <dd>Set the metadata indexing state declared by the `indexed` property. This
+  <dd>Set the metadata indexing state declared by the <code>indexed</code> property. This
   is the only, and default, action.</dd>
 </dl>
 
@@ -67,7 +67,7 @@ Properties
   <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
   <dd>The name of the disk volume to manage. Disables Spotlight searching if the
   index has already been created for the <code>volume</code>. Only applicable if
-  the indexed property is set to false. Default value: <code>true</code></dd>
+  the indexed property is set to <code>false</code>. Default value: <code>true</code></dd>
 </dl>
 
 Examples
