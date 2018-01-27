@@ -45,20 +45,20 @@ Properties
 ----------
 
 <dl>
-  <dt>volume</dt>
+  <dt><code>volume</code></dt>
   </br>
-  <dd><b>Ruby Type:</b> String</dd>
+  <dd><b>Ruby Type: </b><code>String</code></dd>
   <dd>The name of the disk volume to manage.</dd>
 
-  <dt>indexed</dt>
+  <dt><code>indexed</code></dt>
   </br>
-  <dd><b>Ruby Type:</b> TrueClass, FalseClass</dd>
+  <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
   <dd>Whether or not the desired state of the named disk volume is to be indexed.</dd>
 
-  <dt>searchable</dt>
+  <dt><code>searchable</code></dt>
   </br>
-  <dd><b>Ruby Type:</b> TrueClass, FalseClass</b></dd>
-  <dd>The name of the disk volume to manage. Disables Spotlight searching if the index has already been created for the volume. Only applicable if the indexed property is set to false.</dd>
+  <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
+  <dd>The name of the disk volume to manage. Disables Spotlight searching if the <code>index</code> has already been created for the <code>volume</code>. Only applicable if the indexed property is set to false.</dd>
 </dl>
 
 `volume`
