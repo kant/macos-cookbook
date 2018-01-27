@@ -37,48 +37,38 @@ This resource has the following actions:
 
 `:set`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the metadata indexing state declared by the `indexed`
-property. This is the only, and default, action.
-
+<dl>
+  <dd><b>Ruby Type: </b><code>String</code></dd>
+  <dd>Set the metadata indexing state declared by the `indexed` property. This
+  is the only, and default, action.</dd>
+</dl>
 
 Properties
 ----------
 
-<dl>
-  <dt><code>volume</code></dt>
-  </br>
-  <dd><b>Ruby Type: </b><code>String</code></dd>
-  <dd>The name of the disk volume to manage.</dd>
-
-  <dt><code>indexed</code></dt>
-  </br>
-  <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
-  <dd>Whether or not the desired state of the named disk volume is to be indexed.</dd>
-
-  <dt><code>searchable</code></dt>
-  </br>
-  <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
-  <dd>The name of the disk volume to manage. Disables Spotlight searching if the <code>index</code> has already been created for the <code>volume</code>. Only applicable if the indexed property is set to false.</dd>
-</dl>
-
 `volume`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby Type:** `String`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the disk volume to manage.
+<dl>
+  <dd><b>Ruby Type: </b><code>String</code></dd>
+  <dd>The name of the disk volume to manage.</dd>
+</dl>
 
 `indexed`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether or not the desired state of the named disk volume is to
-be indexed.
+<dl>
+  <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
+  <dd>Whether or not the desired state of the named disk volume is to be
+  indexed. Default value: <code>true</code></dd>
+</dl>
 
 `searchable`
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Ruby type:** `TrueClass, FalseClass`
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disables Spotlight searching if the index has already been created for the volume. Only applicable if the `indexed` property is set to `false`.
+<dl>
+  <dd><b>Ruby Type: </b><code>TrueClass, FalseClass</code></dd>
+  <dd>The name of the disk volume to manage. Disables Spotlight searching if the
+  index has already been created for the <code>volume</code>. Only applicable if
+  the indexed property is set to false. Default value: <code>true</code></dd>
+</dl>
 
 Examples
 ----------
