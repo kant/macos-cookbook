@@ -28,10 +28,15 @@ plist 'set system sleep timer to zero' do
   value 0
 end
 
-screensaver_currenthost = ::File.join('/Users', node['macos']['admin_user'], 'Library', 'Preferences', 'ByHost', "com.apple.screensaver.#{hardware_uuid}.plist")
+directory 'ByHost' do
+  path ::File.join('/Users', node['macos']['admin_user'], 'Library', 'Preferences', 'ByHost')
+  user node['macos']['admin_user']
+  group 'staff'
+  mode 0o700
+end
 
 file 'create currentHost screensaver plist' do
-  path screensaver_currenthost
+  path ::File.join(byhost_path, "com.apple.screensaver.#{hardware_uuid}.plist")
   user node['macos']['admin_user']
   group 'staff'
   mode 0o600
